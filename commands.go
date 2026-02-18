@@ -16,6 +16,7 @@ func commandHelp() error {
 	fmt.Println("Welcome to the Adv help page!")
 	fmt.Println("Usage:")
 	fmt.Println("Need to use ! in front of commands")
+	fmt.Println("To selcet a choise type the number infront of it")
 	fmt.Println("---")
 	fmt.Println("Commands:")
 	for _, cmd := range getCommands() {
@@ -32,6 +33,7 @@ func commandPlayerInfo(p player) error {
 	fmt.Printf("Health: %v/%v\n", p.currentHealth, p.maxHealth)
 	fmt.Printf("Mana: %v/%v\n", p.currentMana, p.maxMana)
 	fmt.Printf("Armour: %v\n", p.currentArmour)
+	fmt.Printf("Gold: %v\n", p.gold)
 	fmt.Println("---")
 
 	return nil

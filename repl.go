@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -18,7 +19,7 @@ func startRepl() {
 	reader := bufio.NewScanner(os.Stdin)
 	story := loadStory("Act1.json")
 
-	wasCommand := false
+	continues := false
 
 	fmt.Println("Welcome to Adv")
 	fmt.Println("Input your Name")
@@ -27,10 +28,16 @@ func startRepl() {
 	charakter := createPlayer(firstInput)
 	fmt.Println("Starting Adv...")
 	for {
-		if !wasCommand {
+		if !continues {
 			fmt.Println(story.ChapterSteps[charakter.currentStep].MainString)
+			if story.ChapterSteps[charakter.currentStep].HasChoice {
+				fmt.Println("Your choices:")
+				for _, choice := range story.ChapterSteps[charakter.currentStep].TriggerChoice {
+					fmt.Println(choice.ChoiceText)
+				}
+			}
 		} else {
-			wasCommand = false
+			continues = false
 		}
 
 		fmt.Print("Adv >>> ")
@@ -43,7 +50,7 @@ func startRepl() {
 
 		commandName := userInput[0]
 		if strings.HasPrefix(commandName, "!") {
-			wasCommand = true
+			continues = true
 			command, exists := getCommands()[commandName]
 			if command.name == "!player" {
 				err := command.playerCall(charakter)
@@ -63,6 +70,21 @@ func startRepl() {
 				continue
 			}
 		}
+
+		choiceInput, err := strconv.Atoi(userInput[0])
+		if err != nil {
+			continues = true
+			println("Unknown input")
+			continue
+		}
+		if choiceInput < 1 || choiceInput > len(story.ChapterSteps[charakter.currentStep].TriggerChoice) {
+			continues = true
+			println("Unknown input")
+			continue
+		}
+		println(choiceInput)
+		charakter.currentStep = story.ChapterSteps[charakter.currentStep].TriggerChoice[choiceInput-1].ChoiceNextStep
+		println(charakter.currentStep)
 	}
 }
 

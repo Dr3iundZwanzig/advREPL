@@ -23,7 +23,7 @@ type ChapterStep struct {
 
 type ChoiceOption struct {
 	ChoiceText        string  `json:"choiceText"`
-	NextStep          int     `json:"nextStep"`
+	ChoiceNextStep    int     `json:"choiceNextStep"`
 	ChoiceRequirement *string `json:"choiceRequirement"` // nil when null
 }
 
