@@ -1,0 +1,36 @@
+{
+  "chapter": 1,
+  "chapterName": "Adventure starts",
+  "ChapterSteps": [
+    {
+      "stepNo": 0,
+      "mainString": "You are a young adventurer, who just arrived in the city of Areth build around a giant petrified tree.\nYour current goal is to register at the local guild in order to gain access to the dungeons inside the tree.",
+      "hasChoice": false,
+      "nextStep": 1
+    },
+    {
+      "stepNo": 1,
+      "mainString": "Hello there",
+      "hasChoice": false,
+      "nextStep": 2
+    },
+    {
+      "stepNo": 2,
+      "mainString": "Are you recognized as a",
+      "hasChoice": true,
+      "triggerChoice": [
+        {
+          "choiceText": "I am indeed",
+          "choiceNextStep": 3,
+          "choiceRequirement": "state"
+        },
+        {
+          "choiceText": "I am not",
+          "choiceNextStep": 4,
+          "choiceRequirement": null
+        }
+      ],
+      "nextStep": null
+    }
+  ]
+}   

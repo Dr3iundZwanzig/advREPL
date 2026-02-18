@@ -16,12 +16,23 @@ type cliCommand struct {
 
 func startRepl() {
 	reader := bufio.NewScanner(os.Stdin)
+	story := loadStory("Act1.json")
+
+	wasCommand := false
+
 	fmt.Println("Welcome to Adv")
 	fmt.Println("Input your Name")
 	reader.Scan()
 	firstInput := reader.Text()
 	charakter := createPlayer(firstInput)
+	fmt.Println("Starting Adv...")
 	for {
+		if !wasCommand {
+			fmt.Println(story.ChapterSteps[charakter.currentStep].MainString)
+		} else {
+			wasCommand = false
+		}
+
 		fmt.Print("Adv >>> ")
 		reader.Scan()
 
@@ -32,6 +43,7 @@ func startRepl() {
 
 		commandName := userInput[0]
 		if strings.HasPrefix(commandName, "!") {
+			wasCommand = true
 			command, exists := getCommands()[commandName]
 			if command.name == "!player" {
 				err := command.playerCall(charakter)
