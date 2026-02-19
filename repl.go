@@ -19,13 +19,13 @@ func startRepl() {
 	fmt.Println("Press enter to continue...")
 	reader.Scan()
 	charakter := createPlayer()
-
+	items := loadItems()
 	for {
 		if !continues {
 			fmt.Println(story.ChapterSteps[charakter.currentStep].MainString)
 			if story.ChapterSteps[charakter.currentStep].HasEvent {
 				for _, event := range story.ChapterSteps[charakter.currentStep].Events {
-					triggerEvent(event, &charakter)
+					triggerEvent(event, &charakter, items)
 				}
 			}
 			if story.ChapterSteps[charakter.currentStep].HasChoice {
@@ -50,7 +50,7 @@ func startRepl() {
 		if strings.HasPrefix(commandName, "!") {
 			continues = true
 			command, exists := getCommands()[commandName]
-			if command.name == "!player" {
+			if command.name == "!player" || command.name == "!items" {
 				err := command.playerCall(charakter)
 				if err != nil {
 					fmt.Println(err)
@@ -114,6 +114,11 @@ func getCommands() map[string]cliCommand {
 			name:        "!player",
 			description: "Displayes player information",
 			playerCall:  commandPlayerInfo,
+		},
+		"!items": {
+			name:        "!items",
+			description: "Displayes player items",
+			playerCall:  commandPlayerItems,
 		},
 	}
 }

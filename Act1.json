@@ -54,12 +54,12 @@
       "hasEvent": false,
       "triggerChoice": [
         {
-          "choiceText": "I am indeed",
-          "choiceNextStep": 3,
-          "choiceRequirement": "state"
+          "choiceText": "1. Go to the guild",
+          "choiceNextStep": 1,
+          "choiceRequirement": null
         },
         {
-          "choiceText": "I am not",
+          "choiceText": "",
           "choiceNextStep": 4,
           "choiceRequirement": null
         }

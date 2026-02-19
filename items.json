@@ -1,0 +1,29 @@
+{
+    "items": [
+        {
+            "itemID": 1,
+            "itemName": "Health Potion",
+            "itemDescription": "A potion that restores health.",
+            "itemType": "Consumable",
+            "itemEffect": {
+                "healthRestore": 50
+            }
+        },
+        {
+            "itemID": 2,
+            "itemName": "Mana Potion",
+            "itemDescription": "A potion that restores mana.",
+            "itemType": "Consumable",
+            "itemEffect": {
+                "manaRestore": 20
+            }
+        },
+        {
+            "itemID": 3,
+            "itemName": "Bronze Badge",
+            "itemDescription": "Simple badge given to new guild members.",
+            "itemType": "Trinket",
+            "itemEffect": null
+        }
+    ]
+}

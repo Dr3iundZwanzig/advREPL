@@ -16,7 +16,7 @@ func commandHelp() error {
 	fmt.Println("Welcome to the Adv help page!")
 	fmt.Println("Usage:")
 	fmt.Println("Need to use ! in front of commands")
-	fmt.Println("To selcet a choise type the number infront of it")
+	fmt.Println("To selcet a choice type the number infront of it")
 	fmt.Println("---")
 	fmt.Println("Commands:")
 	for _, cmd := range getCommands() {
@@ -36,5 +36,20 @@ func commandPlayerInfo(p player) error {
 	fmt.Printf("Gold: %v\n", p.gold)
 	fmt.Println("---")
 
+	return nil
+}
+
+func commandPlayerItems(p player) error {
+	if len(p.items) == 0 {
+		fmt.Println("You have no items yet!")
+		fmt.Println("---")
+		return nil
+	}
+	fmt.Println("---")
+	fmt.Println("Player Items:")
+	for _, item := range p.items {
+		fmt.Printf("- %v\n", item.ItemName)
+	}
+	fmt.Println("---")
 	return nil
 }

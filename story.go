@@ -44,7 +44,7 @@ func loadStory(fileName string) Story {
 	var story Story
 	err = json.Unmarshal(file, &story)
 	if err != nil {
-		log.Fatal(fmt.Errorf("Error creating struct: %v", err))
+		log.Fatal(fmt.Errorf("Error creating struct from %v: %v", fileName, err))
 	}
 	return story
 }
