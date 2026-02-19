@@ -6,15 +6,12 @@ import (
 	"os"
 )
 
-func triggerEvent(event Event, p *player, items ItemCollection) {
+func triggerEvent(event Event, p *player, items map[int]Item) {
 	switch event.EventName {
 	case "Guild Registration":
-		for _, item := range items.Items {
-			if item.ItemName == "Bronze Badge" {
-				p.items = append(p.items, item)
-				break
-			}
-		}
+		p.items = append(p.items, items[1])
+		p.items = append(p.items, items[2])
+		p.items = append(p.items, items[3])
 		fmt.Println(event.EventDescription)
 		p.events = append(p.events, event)
 		namePlayer(p)

@@ -48,7 +48,7 @@ func commandPlayerItems(p player) error {
 	fmt.Println("---")
 	fmt.Println("Player Items:")
 	for _, item := range p.items {
-		fmt.Printf("- %v\n", item.ItemName)
+		fmt.Printf("- %v (%v)\n", item.ItemName, item.ItemDescription)
 	}
 	fmt.Println("---")
 	return nil

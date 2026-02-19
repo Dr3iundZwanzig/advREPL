@@ -14,18 +14,23 @@ func startRepl() {
 
 	continues := false // used to prevent printing the main string again after a command is executed or an unknown input is given
 
+	charakter := createPlayer()
+	items := loadItems()
+	itemMap := make(map[int]Item)
+	for _, item := range items.Items {
+		itemMap[item.ItemID] = item
+	}
 	fmt.Println("Welcome to Adv")
 	fmt.Println("Starting Adv...")
 	fmt.Println("Press enter to continue...")
 	reader.Scan()
-	charakter := createPlayer()
-	items := loadItems()
+
 	for {
 		if !continues {
 			fmt.Println(story.ChapterSteps[charakter.currentStep].MainString)
 			if story.ChapterSteps[charakter.currentStep].HasEvent {
 				for _, event := range story.ChapterSteps[charakter.currentStep].Events {
-					triggerEvent(event, &charakter, items)
+					triggerEvent(event, &charakter, itemMap)
 				}
 			}
 			if story.ChapterSteps[charakter.currentStep].HasChoice {
