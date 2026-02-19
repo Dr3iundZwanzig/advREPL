@@ -8,28 +8,26 @@ import (
 	"strings"
 )
 
-type cliCommand struct {
-	name        string
-	description string
-	callback    func() error
-	playerCall  func(player) error
-}
-
 func startRepl() {
 	reader := bufio.NewScanner(os.Stdin)
 	story := loadStory("Act1.json")
 
-	continues := false
+	continues := false // used to prevent printing the main string again after a command is executed or an unknown input is given
 
 	fmt.Println("Welcome to Adv")
-	fmt.Println("Input your Name")
-	reader.Scan()
-	firstInput := reader.Text()
-	charakter := createPlayer(firstInput)
 	fmt.Println("Starting Adv...")
+	fmt.Println("Press enter to continue...")
+	reader.Scan()
+	charakter := createPlayer()
+
 	for {
 		if !continues {
 			fmt.Println(story.ChapterSteps[charakter.currentStep].MainString)
+			if story.ChapterSteps[charakter.currentStep].HasEvent {
+				for _, event := range story.ChapterSteps[charakter.currentStep].Events {
+					triggerEvent(event, &charakter)
+				}
+			}
 			if story.ChapterSteps[charakter.currentStep].HasChoice {
 				fmt.Println("Your choices:")
 				for _, choice := range story.ChapterSteps[charakter.currentStep].TriggerChoice {
@@ -47,7 +45,7 @@ func startRepl() {
 		if len(userInput) == 0 {
 			continue
 		}
-
+		// command input
 		commandName := userInput[0]
 		if strings.HasPrefix(commandName, "!") {
 			continues = true
@@ -70,7 +68,7 @@ func startRepl() {
 				continue
 			}
 		}
-
+		// choice input
 		choiceInput, err := strconv.Atoi(userInput[0])
 		if err != nil {
 			continues = true
@@ -82,9 +80,8 @@ func startRepl() {
 			println("Unknown input")
 			continue
 		}
-		println(choiceInput)
 		charakter.currentStep = story.ChapterSteps[charakter.currentStep].TriggerChoice[choiceInput-1].ChoiceNextStep
-		println(charakter.currentStep)
+
 	}
 }
 
@@ -92,6 +89,13 @@ func cleanInput(text string) []string {
 	output := strings.ToLower(text)
 	words := strings.Fields(output)
 	return words
+}
+
+type cliCommand struct {
+	name        string
+	description string
+	callback    func() error
+	playerCall  func(player) error
 }
 
 func getCommands() map[string]cliCommand {

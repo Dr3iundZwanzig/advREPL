@@ -6,6 +6,7 @@
       "stepNo": 0,
       "mainString": "You are a young adventurer, who just arrived in the city of Areth build around a giant petrified tree.\nYour current goal is to register at the local guild in order to gain access to the dungeons inside the tree.",
       "hasChoice": true,
+      "hasEvent": false,
       "triggerChoice": [
         {
           "choiceText": "1. Go to the guild",
@@ -24,6 +25,7 @@
       "stepNo": 1,
       "mainString": "You follow the signs mounted on large poles to the guild.\nNumerous people greeted you along the way, which was quite the change of pace from the dull and uninteresting encounters you had along the way to the ciry.\nLuckily the reception at the guild was quite empty, so you could easily get right up to the counter and start the registration process.\nAfter a short conversation you where given a badge and the registration papers, even though you are just startet as the lowest rank the first floor of the dungeon is now open and you can start one of the apprentice quests.",
       "hasChoice": true,
+      "hasEvent": true,
       "triggerChoice": [
         {
           "choiceText": "I am indeed",
@@ -36,12 +38,20 @@
           "choiceRequirement": null
         }
       ],
+      "events": [
+        {
+          "eventName": "Guild Registration",
+          "eventDescription": "You have successfully registered at the guild so what is your name?",
+          "eventRequirement": null
+        }
+      ],
       "nextStep": null
     },
     {
       "stepNo": 2,
       "mainString": "Merchant",
       "hasChoice": true,
+      "hasEvent": false,
       "triggerChoice": [
         {
           "choiceText": "I am indeed",

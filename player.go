@@ -11,11 +11,12 @@ type player struct {
 	currentAct     int
 	currentChapter int
 	currentStep    int
+	events         []Event
 }
 
-func createPlayer(name string) player {
+func createPlayer() player {
 	char := player{
-		playerName:     name,
+		playerName:     "nameless",
 		gold:           100,
 		maxHealth:      50,
 		currentHealth:  50,
@@ -25,6 +26,7 @@ func createPlayer(name string) player {
 		currentAct:     1,
 		currentChapter: 1,
 		currentStep:    0,
+		events:         []Event{},
 	}
 	return char
 }
