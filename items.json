@@ -6,7 +6,7 @@
             "itemDescription": "A potion that restores health.",
             "itemType": "Consumable",
             "itemEffect": {
-                "healthRestore": 50
+                "healthRestore": 25
             }
         },
         {
@@ -15,7 +15,7 @@
             "itemDescription": "A potion that restores mana.",
             "itemType": "Consumable",
             "itemEffect": {
-                "manaRestore": 20
+                "manaRestore": 5
             }
         },
         {

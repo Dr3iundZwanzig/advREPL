@@ -54,24 +54,11 @@ func startRepl() {
 		commandName := userInput[0]
 		if strings.HasPrefix(commandName, "!") {
 			continues = true
-			command, exists := getCommands()[commandName]
-			if command.name == "!player" || command.name == "!items" {
-				err := command.playerCall(charakter)
-				if err != nil {
-					fmt.Println(err)
-				}
-				continue
+			err := executeCommand(userInput, &charakter)
+			if err != nil {
+				fmt.Println(err)
 			}
-			if exists {
-				err := command.callback()
-				if err != nil {
-					fmt.Println(err)
-				}
-				continue
-			} else {
-				fmt.Println("Unknown command")
-				continue
-			}
+			continue
 		}
 		// choice input
 		choiceInput, err := strconv.Atoi(userInput[0])
@@ -101,6 +88,7 @@ type cliCommand struct {
 	description string
 	callback    func() error
 	playerCall  func(player) error
+	playerInput func(*player, int) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -125,5 +113,35 @@ func getCommands() map[string]cliCommand {
 			description: "Displayes player items",
 			playerCall:  commandPlayerItems,
 		},
+		"!use": {
+			name:        "!use",
+			description: "Use an item from your inventory. Usage: !use [itemID]",
+			playerInput: commandUseItem,
+		},
 	}
+}
+
+func executeCommand(playerInput []string, p *player) error {
+	commandName := playerInput[0]
+	command, exists := getCommands()[commandName]
+	if !exists {
+		return fmt.Errorf("Unknown command: %s", commandName)
+	}
+	if command.playerCall != nil {
+		return command.playerCall(*p)
+	}
+	if command.playerInput != nil {
+		if len(playerInput) < 2 {
+			return fmt.Errorf("Missing item ID for command %s", commandName)
+		}
+		itemID, err := strconv.Atoi(playerInput[1])
+		if err != nil {
+			return fmt.Errorf("Invalid item ID: %s", playerInput[1])
+		}
+		return command.playerInput(p, itemID)
+	}
+	if command.callback != nil {
+		return command.callback()
+	}
+	return nil
 }

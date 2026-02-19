@@ -48,8 +48,19 @@ func commandPlayerItems(p player) error {
 	fmt.Println("---")
 	fmt.Println("Player Items:")
 	for _, item := range p.items {
-		fmt.Printf("- %v (%v)\n", item.ItemName, item.ItemDescription)
+		fmt.Printf("ID:%v- %v (%v)\n", item.ItemID, item.ItemName, item.ItemDescription)
 	}
 	fmt.Println("---")
+	return nil
+}
+
+func commandUseItem(p *player, itemID int) error {
+	for _, item := range p.items {
+		if item.ItemID == itemID {
+			p.useItem(itemID)
+			return nil
+		}
+	}
+	fmt.Printf("You don't have an item with the ID %v!\n", itemID)
 	return nil
 }
