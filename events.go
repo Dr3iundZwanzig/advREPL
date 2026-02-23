@@ -17,9 +17,8 @@ func triggerEvent(event Event, config *config) {
 	p := &config.player
 	switch event.EventName {
 	case "Guild Registration":
-		p.items = append(p.items, items[1])
-		p.items = append(p.items, items[2])
-		p.items = append(p.items, items[3])
+		p.addItem(items[1], 1)
+		p.addItem(items[3], 1)
 		fmt.Println(event.EventDescription)
 		p.events[event.EventName] = event
 		namePlayer(p)

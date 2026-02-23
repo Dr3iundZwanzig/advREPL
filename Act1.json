@@ -41,7 +41,7 @@
       "events": [
         {
           "eventName": "Guild Registration",
-          "eventDescription": "You have successfully registered at the guild so what is your name?",
+          "eventDescription": "You have successfully registered at the guild and received your badge and a health potion. What is your name?",
           "eventRequirement": null
         }
       ],

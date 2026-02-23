@@ -12,11 +12,17 @@ type player struct {
 	maxMana        int
 	currentMana    int
 	currentArmour  int
+	currentAttack  int
 	currentAct     int
 	currentChapter int
 	currentStep    int
 	events         map[string]Event
-	items          []Item
+	items          map[int]playerItem
+}
+
+type playerItem struct {
+	amount int
+	item   Item
 }
 
 func createPlayer() player {
@@ -28,50 +34,52 @@ func createPlayer() player {
 		maxMana:        20,
 		currentMana:    5,
 		currentArmour:  0,
+		currentAttack:  5,
 		currentAct:     1,
 		currentChapter: 1,
 		currentStep:    0,
 		events:         map[string]Event{},
-		items:          []Item{},
+		items:          map[int]playerItem{},
 	}
 	return char
 }
 
-func (player *player) addItem(item Item) {
-	player.items = append(player.items, item)
-}
-
-func (player *player) hasItem(itemID int) bool {
-	for _, item := range player.items {
-		if item.ItemID == itemID {
-			return true
+func (player *player) addItem(item Item, amount int) {
+	if existingItem, ok := player.items[item.ItemID]; ok {
+		existingItem.amount += amount
+	} else {
+		player.items[item.ItemID] = playerItem{
+			amount: amount,
+			item:   item,
 		}
 	}
-	return false
 }
 
 func (player *player) useItem(itemID int) {
-	for i, item := range player.items {
-		if item.ItemID == itemID {
-			if item.ItemType == "Consumable" {
-				if item.ItemEffect != nil {
-					player.currentHealth += item.ItemEffect.HealthRestore
-					if player.currentHealth > player.maxHealth {
-						player.currentHealth = player.maxHealth
-					}
-					player.currentMana += item.ItemEffect.ManaRestore
-					if player.currentMana > player.maxMana {
-						player.currentMana = player.maxMana
-					}
-					player.currentArmour += item.ItemEffect.AttackBoost
-					player.currentArmour += item.ItemEffect.DefenseBoost
-					player.items = append(player.items[:i], player.items[i+1:]...)
-					fmt.Printf("You used %v!\n", item.ItemName)
-					return
-				}
-			} else {
-				fmt.Printf("%v is not a consumable item!\n", item.ItemName)
-			}
+	if existingItem, ok := player.items[itemID]; !ok {
+		fmt.Printf("You don't have an item with the ID %v!\n", itemID)
+		return
+	} else {
+		if existingItem.item.ItemType != "consumable" {
+			fmt.Printf("You cannot use this item!\n")
+			return
 		}
+		existingItem.amount -= 1
+		if existingItem.amount <= 0 {
+			delete(player.items, itemID)
+		}
+		effect := existingItem.item.ItemEffect
+		player.currentHealth += effect.HealthRestore
+		if player.currentHealth > player.maxHealth {
+			player.currentHealth = player.maxHealth
+		}
+		player.currentMana += effect.ManaRestore
+		if player.currentMana > player.maxMana {
+			player.currentMana = player.maxMana
+		}
+		player.currentArmour += effect.DefenseBoost
+		player.currentAttack += effect.AttackBoost
+		fmt.Printf("You used %v!\n", existingItem.item.ItemName)
 	}
+
 }

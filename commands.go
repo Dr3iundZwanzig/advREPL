@@ -50,8 +50,8 @@ func commandPlayerItems(config *config, _ ...string) error {
 	}
 	fmt.Println("---")
 	fmt.Println("Player Items:")
-	for _, item := range p.items {
-		fmt.Printf("ID:%v- %v (%v)\n", item.ItemID, item.ItemName, item.ItemDescription)
+	for itemName, items := range p.items {
+		fmt.Printf("ID:%v -%v (Amount: %v)\n", items.item.ItemID, itemName, items.amount)
 	}
 	fmt.Println("---")
 	return nil
@@ -67,16 +67,10 @@ func commandUseItem(config *config, args ...string) error {
 		fmt.Println("Invalid item ID")
 		return nil
 	}
-	p := config.player
-	for _, item := range p.items {
-		if item.ItemID == itemID {
-			p.useItem(itemID)
-			return nil
-		}
-	}
-	fmt.Printf("You don't have an item with the ID %v!\n", itemID)
+	config.player.useItem(itemID)
 	return nil
 }
+
 func commandSelectChoice(config *config, args ...string) error {
 	if len(args) < 1 {
 		fmt.Println("Usage: !choice [choiceNumber]")
