@@ -15,7 +15,7 @@ type player struct {
 	currentAct     int
 	currentChapter int
 	currentStep    int
-	events         []Event
+	events         map[string]Event
 	items          []Item
 }
 
@@ -31,7 +31,7 @@ func createPlayer() player {
 		currentAct:     1,
 		currentChapter: 1,
 		currentStep:    0,
-		events:         []Event{},
+		events:         map[string]Event{},
 		items:          []Item{},
 	}
 	return char

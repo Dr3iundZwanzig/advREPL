@@ -4,20 +4,16 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 )
 
-func startRepl() {
+func startRepl(config *config) {
 	reader := bufio.NewScanner(os.Stdin)
-	story := loadStory("Act1.json")
 
 	continues := false // used to prevent printing the main string again after a command is executed or an unknown input is given
 
-	charakter := createPlayer()
-	items := loadItems()
 	itemMap := make(map[int]Item)
-	for _, item := range items.Items {
+	for _, item := range config.items.Items {
 		itemMap[item.ItemID] = item
 	}
 	fmt.Println("Welcome to Adv")
@@ -27,18 +23,7 @@ func startRepl() {
 
 	for {
 		if !continues {
-			fmt.Println(story.ChapterSteps[charakter.currentStep].MainString)
-			if story.ChapterSteps[charakter.currentStep].HasEvent {
-				for _, event := range story.ChapterSteps[charakter.currentStep].Events {
-					triggerEvent(event, &charakter, itemMap)
-				}
-			}
-			if story.ChapterSteps[charakter.currentStep].HasChoice {
-				fmt.Println("Your choices:")
-				for _, choice := range story.ChapterSteps[charakter.currentStep].TriggerChoice {
-					fmt.Println(choice.ChoiceText)
-				}
-			}
+			continueStory(config)
 		} else {
 			continues = false
 		}
@@ -52,28 +37,21 @@ func startRepl() {
 		}
 		// command input
 		commandName := userInput[0]
-		if strings.HasPrefix(commandName, "!") {
-			continues = true
-			err := executeCommand(userInput, &charakter)
-			if err != nil {
-				fmt.Println(err)
-			}
+		args := userInput[1:]
+		continues = true
+		command, exists := getCommands()[commandName]
+		if !exists {
+			println("Unknown command")
 			continue
 		}
-		// choice input
-		choiceInput, err := strconv.Atoi(userInput[0])
+		err := command.callback(config, args...)
 		if err != nil {
-			continues = true
-			println("Unknown input")
-			continue
+			fmt.Println(err)
 		}
-		if choiceInput < 1 || choiceInput > len(story.ChapterSteps[charakter.currentStep].TriggerChoice) {
-			continues = true
-			println("Unknown input")
-			continue
+		if commandName == "!choice" {
+			continues = false
 		}
-		charakter.currentStep = story.ChapterSteps[charakter.currentStep].TriggerChoice[choiceInput-1].ChoiceNextStep
-
+		continue
 	}
 }
 
@@ -83,12 +61,16 @@ func cleanInput(text string) []string {
 	return words
 }
 
+type config struct {
+	player player
+	items  ItemCollection
+	story  Story
+}
+
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
-	playerCall  func(player) error
-	playerInput func(*player, int) error
+	callback    func(*config, ...string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -106,42 +88,22 @@ func getCommands() map[string]cliCommand {
 		"!player": {
 			name:        "!player",
 			description: "Displayes player information",
-			playerCall:  commandPlayerInfo,
+			callback:    commandPlayerInfo,
 		},
 		"!items": {
 			name:        "!items",
 			description: "Displayes player items",
-			playerCall:  commandPlayerItems,
+			callback:    commandPlayerItems,
 		},
 		"!use": {
 			name:        "!use",
 			description: "Use an item from your inventory. Usage: !use [itemID]",
-			playerInput: commandUseItem,
+			callback:    commandUseItem,
+		},
+		"!choice": {
+			name:        "!choice",
+			description: "Select a choice. Usage: !choice [choiceNumber]",
+			callback:    commandSelectChoice,
 		},
 	}
-}
-
-func executeCommand(playerInput []string, p *player) error {
-	commandName := playerInput[0]
-	command, exists := getCommands()[commandName]
-	if !exists {
-		return fmt.Errorf("Unknown command: %s", commandName)
-	}
-	if command.playerCall != nil {
-		return command.playerCall(*p)
-	}
-	if command.playerInput != nil {
-		if len(playerInput) < 2 {
-			return fmt.Errorf("Missing item ID for command %s", commandName)
-		}
-		itemID, err := strconv.Atoi(playerInput[1])
-		if err != nil {
-			return fmt.Errorf("Invalid item ID: %s", playerInput[1])
-		}
-		return command.playerInput(p, itemID)
-	}
-	if command.callback != nil {
-		return command.callback()
-	}
-	return nil
 }

@@ -48,3 +48,19 @@ func loadStory(fileName string) Story {
 	}
 	return story
 }
+
+func continueStory(config *config) {
+	currentStep := config.story.ChapterSteps[config.player.currentStep]
+	fmt.Println(currentStep.MainString)
+	if currentStep.HasEvent {
+		for _, event := range currentStep.Events {
+			triggerEvent(event, config)
+		}
+	}
+	if currentStep.HasChoice {
+		fmt.Println("Your choices:")
+		for _, choice := range currentStep.TriggerChoice {
+			fmt.Println(choice.ChoiceText)
+		}
+	}
+}

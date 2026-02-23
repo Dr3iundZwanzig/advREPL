@@ -3,15 +3,16 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 )
 
-func commandExit() error {
+func commandExit(config *config, _ ...string) error {
 	fmt.Println("Closing the Adv!")
 	os.Exit(0)
 	return nil
 }
 
-func commandHelp() error {
+func commandHelp(config *config, _ ...string) error {
 	fmt.Println("---")
 	fmt.Println("Welcome to the Adv help page!")
 	fmt.Println("Usage:")
@@ -26,7 +27,8 @@ func commandHelp() error {
 	return nil
 }
 
-func commandPlayerInfo(p player) error {
+func commandPlayerInfo(config *config, _ ...string) error {
+	p := config.player
 	fmt.Println("---")
 	fmt.Println("Player Information:")
 	fmt.Printf("Name: %v\n", p.playerName)
@@ -39,7 +41,8 @@ func commandPlayerInfo(p player) error {
 	return nil
 }
 
-func commandPlayerItems(p player) error {
+func commandPlayerItems(config *config, _ ...string) error {
+	p := config.player
 	if len(p.items) == 0 {
 		fmt.Println("You have no items yet!")
 		fmt.Println("---")
@@ -54,7 +57,17 @@ func commandPlayerItems(p player) error {
 	return nil
 }
 
-func commandUseItem(p *player, itemID int) error {
+func commandUseItem(config *config, args ...string) error {
+	if len(args) < 1 {
+		fmt.Println("Usage: !use [itemID]")
+		return nil
+	}
+	itemID, err := strconv.Atoi(args[0])
+	if err != nil {
+		fmt.Println("Invalid item ID")
+		return nil
+	}
+	p := config.player
 	for _, item := range p.items {
 		if item.ItemID == itemID {
 			p.useItem(itemID)
@@ -62,5 +75,24 @@ func commandUseItem(p *player, itemID int) error {
 		}
 	}
 	fmt.Printf("You don't have an item with the ID %v!\n", itemID)
+	return nil
+}
+func commandSelectChoice(config *config, args ...string) error {
+	if len(args) < 1 {
+		fmt.Println("Usage: !choice [choiceNumber]")
+		return nil
+	}
+	choiceNumber, err := strconv.Atoi(args[0])
+	if err != nil {
+		fmt.Println("Invalid choice number")
+		return nil
+	}
+	currentStep := config.story.ChapterSteps[config.player.currentStep]
+	if choiceNumber < 1 || choiceNumber > len(currentStep.TriggerChoice) {
+		fmt.Println("Invalid choice number")
+		return nil
+	}
+	config.player.currentStep = currentStep.TriggerChoice[choiceNumber-1].ChoiceNextStep
+	continueStory(config)
 	return nil
 }

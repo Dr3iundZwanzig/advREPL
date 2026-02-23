@@ -1,5 +1,10 @@
 package main
 
 func main() {
-	startRepl()
+	config := config{
+		player: createPlayer(),
+		items:  loadItems(),
+		story:  loadStory("Act1.json"),
+	}
+	startRepl(&config)
 }
