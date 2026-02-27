@@ -5,6 +5,7 @@
             "itemName": "Health Potion",
             "itemDescription": "A potion that restores health.",
             "itemType": "Consumable",
+            "itemGoldCost": 10,
             "itemEffect": {
                 "healthRestore": 25
             }
@@ -14,6 +15,7 @@
             "itemName": "Mana Potion",
             "itemDescription": "A potion that restores mana.",
             "itemType": "Consumable",
+            "itemGoldCost": 10,
             "itemEffect": {
                 "manaRestore": 5
             }
@@ -23,6 +25,7 @@
             "itemName": "Bronze Badge",
             "itemDescription": "Simple badge given to new guild members.",
             "itemType": "Trinket",
+            "itemGoldCost": null,
             "itemEffect": null
         }
     ]

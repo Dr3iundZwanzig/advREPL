@@ -19,6 +19,7 @@ type Item struct {
 	ItemName        string      `json:"itemName"`
 	ItemDescription string      `json:"itemDescription"`
 	ItemType        string      `json:"itemType"`
+	ItemGoldCost    *int        `json:"itemGoldCost"`
 	ItemEffect      *ItemEffect `json:"itemEffect"`
 }
 

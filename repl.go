@@ -12,12 +12,8 @@ func startRepl(config *config) {
 
 	continues := false // used to prevent printing the main string again after a command is executed or an unknown input is given
 
-	itemMap := make(map[int]Item)
-	for _, item := range config.items.Items {
-		itemMap[item.ItemID] = item
-	}
 	fmt.Println("Welcome to Adv")
-	fmt.Println("Starting Adv...")
+	fmt.Println("Type !help for a list of commands")
 	fmt.Println("Press enter to continue...")
 	reader.Scan()
 
@@ -47,6 +43,7 @@ func startRepl(config *config) {
 		err := command.callback(config, args...)
 		if err != nil {
 			fmt.Println(err)
+			continue
 		}
 		if commandName == "!choice" {
 			continues = false
@@ -63,7 +60,7 @@ func cleanInput(text string) []string {
 
 type config struct {
 	player player
-	items  ItemCollection
+	items  map[int]Item
 	story  Story
 }
 

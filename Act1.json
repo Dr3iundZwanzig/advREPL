@@ -14,7 +14,7 @@
           "choiceRequirement": null
         },
         {
-          "choiceText": "2. Go to the nearest tavern",
+          "choiceText": "2. Go to the nearest Merchant",
           "choiceNextStep": 2,
           "choiceRequirement": null
         }
@@ -49,9 +49,16 @@
     },
     {
       "stepNo": 2,
-      "mainString": "Merchant",
+      "mainString": "Before you decide to go to the guild you walke a bit furher down the main road filled with diffrent shops and merchants who sell all kind of goods on the sidewalks. After a while you find a shop that looks more affordable compared to the gold in your pokets and decide to enter it. Inside a grumpy looking old man looks at you and just mumbles 'What do you want ?'",
       "hasChoice": true,
-      "hasEvent": false,
+      "hasEvent": true,
+      "events": [
+        {
+          "eventName": "Old man Shop",
+          "eventDescription": "Choose an item to buy",
+          "eventRequirement": null
+        }
+      ],
       "triggerChoice": [
         {
           "choiceText": "1. Go to the guild",

@@ -17,7 +17,7 @@ type player struct {
 	currentChapter int
 	currentStep    int
 	events         map[string]Event
-	items          map[int]playerItem
+	items          map[int]*playerItem
 }
 
 type playerItem struct {
@@ -39,7 +39,7 @@ func createPlayer() player {
 		currentChapter: 1,
 		currentStep:    0,
 		events:         map[string]Event{},
-		items:          map[int]playerItem{},
+		items:          map[int]*playerItem{},
 	}
 	return char
 }
@@ -47,8 +47,11 @@ func createPlayer() player {
 func (player *player) addItem(item Item, amount int) {
 	if existingItem, ok := player.items[item.ItemID]; ok {
 		existingItem.amount += amount
+		fmt.Println("item up")
+		fmt.Println(amount)
 	} else {
-		player.items[item.ItemID] = playerItem{
+		fmt.Println("item NEW")
+		player.items[item.ItemID] = &playerItem{
 			amount: amount,
 			item:   item,
 		}
@@ -60,7 +63,7 @@ func (player *player) useItem(itemID int) {
 		fmt.Printf("You don't have an item with the ID %v!\n", itemID)
 		return
 	} else {
-		if existingItem.item.ItemType != "consumable" {
+		if existingItem.item.ItemType != "Consumable" {
 			fmt.Printf("You cannot use this item!\n")
 			return
 		}

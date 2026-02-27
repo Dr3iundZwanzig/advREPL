@@ -50,8 +50,8 @@ func commandPlayerItems(config *config, _ ...string) error {
 	}
 	fmt.Println("---")
 	fmt.Println("Player Items:")
-	for itemName, items := range p.items {
-		fmt.Printf("ID:%v -%v (Amount: %v)\n", items.item.ItemID, itemName, items.amount)
+	for itemID, items := range p.items {
+		fmt.Printf("ID:%v -%v (Amount: %v)\n", itemID, items.item.ItemName, items.amount)
 	}
 	fmt.Println("---")
 	return nil
@@ -73,20 +73,16 @@ func commandUseItem(config *config, args ...string) error {
 
 func commandSelectChoice(config *config, args ...string) error {
 	if len(args) < 1 {
-		fmt.Println("Usage: !choice [choiceNumber]")
-		return nil
+		return fmt.Errorf("missing choice number")
 	}
 	choiceNumber, err := strconv.Atoi(args[0])
 	if err != nil {
-		fmt.Println("Invalid choice number")
-		return nil
+		return fmt.Errorf("invalid choice number")
 	}
 	currentStep := config.story.ChapterSteps[config.player.currentStep]
 	if choiceNumber < 1 || choiceNumber > len(currentStep.TriggerChoice) {
-		fmt.Println("Invalid choice number")
-		return nil
+		return fmt.Errorf("invalid choice number")
 	}
 	config.player.currentStep = currentStep.TriggerChoice[choiceNumber-1].ChoiceNextStep
-	continueStory(config)
 	return nil
 }
