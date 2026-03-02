@@ -112,5 +112,10 @@ func getCommands() map[string]cliCommand {
 			description: "Select a choice. Usage: !choice [choiceNumber]",
 			callback:    commandSelectChoice,
 		},
+		"!quest": {
+			name:        "!quest",
+			description: "View current quest information",
+			callback:    commandQuestInfo,
+		},
 	}
 }

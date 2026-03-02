@@ -25,7 +25,8 @@ func triggerEvent(event Event, config *config) {
 		fmt.Println(event.EventDescription)
 		regularShopEvent(config)
 	case "Get Quest":
-		fmt.Println(event.EventDescription)
+		quests := []int{1, 2, 3}
+		chooseQuest(quests, config)
 	case "Open World":
 		p.events[event.EventName] = event
 		fmt.Println("-------------------------------")

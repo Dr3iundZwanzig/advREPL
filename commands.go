@@ -93,3 +93,21 @@ func commandSelectChoice(config *config, args ...string) error {
 	config.player.currentStep = currentStep.TriggerChoice[choiceNumber-1].ChoiceNextStep
 	return nil
 }
+
+func commandQuestInfo(config *config, _ ...string) error {
+	if !config.player.currentQuests.hasQuest {
+		return fmt.Errorf("You have no active quest.")
+	}
+	q := config.player.currentQuests.currentQuest
+	fmt.Println("Active quest:")
+	fmt.Printf("Name: %v\n", q.QuestName)
+	fmt.Printf("Description: %v\n", q.QuestDescription)
+	fmt.Printf("Gold Reward: %v\n", q.QuestGoldReward)
+	fmt.Printf("Guild Experience Reward: %v\n", q.QuestGuildExperience)
+	fmt.Println("Item Reward:")
+	for _, reward := range q.QuestItemRewards {
+		item := config.items[reward.ItemID]
+		fmt.Printf("  - %v (Amount: %v)\n", item.ItemName, reward.Amount)
+	}
+	return nil
+}

@@ -25,6 +25,19 @@
             "questItemRewards": [
                     { "itemID": 1, "amount": 2 }
             ]
+        },
+        {
+            "questID": 3,
+            "questName": "Kill Goblins",
+            "questType": "Kill",
+            "questAmount": 5,
+            "questDescription": "Kill 5 Goblins in the dungeon",
+            "questGoldReward": 50,
+            "repeatable": true,
+            "questGuildExperience": 20,
+            "questItemRewards": [
+                    { "itemID": 1, "amount": 2 }
+            ]
         }
     ]
 }
