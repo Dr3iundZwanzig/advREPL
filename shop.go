@@ -28,12 +28,11 @@ func fillShopItems(config *config, itemIDs []int) (map[int]*ShopItems, error) {
 	return shopItems, nil
 }
 
-func regularShopEvent(config *config) {
+func regularShop(config *config) error {
 	reader := bufio.NewScanner(os.Stdin)
 	shopItems, ok := fillShopItems(config, []int{1, 2})
 	if ok != nil {
-		fmt.Println(ok)
-		return
+		return ok
 	}
 	keys := make([]int, 0, len(shopItems))
 	for k := range shopItems {
@@ -91,4 +90,5 @@ func regularShopEvent(config *config) {
 			fmt.Println("Invalid item ID.")
 		}
 	}
+	return nil
 }

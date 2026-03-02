@@ -80,6 +80,22 @@ type cliCommand struct {
 	callback    func(*config, ...string) error
 }
 
+type location struct {
+	name        string
+	description string
+	callback    func(*config) error
+}
+
+func getLocations() map[string]location {
+	return map[string]location{
+		"shop": {
+			name:        "shop",
+			description: "A shop",
+			callback:    regularShop,
+		},
+	}
+}
+
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
 		"!help": {
@@ -116,6 +132,16 @@ func getCommands() map[string]cliCommand {
 			name:        "!quest",
 			description: "View current quest information",
 			callback:    commandQuestInfo,
+		},
+		"!go": {
+			name:        "!go",
+			description: "Go to the given Location",
+			callback:    commandGo,
+		},
+		"!locations": {
+			name:        "!locations",
+			description: "Show all the Locations",
+			callback:    commandLocations,
 		},
 	}
 }

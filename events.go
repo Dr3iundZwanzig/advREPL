@@ -6,10 +6,10 @@ import (
 	"os"
 )
 
-func triggerEvent(event Event, config *config) {
+func triggerEvent(event Event, config *config) error {
 
 	if _, ok := config.player.events[event.EventName]; ok {
-		return
+		return nil
 	}
 	p := &config.player
 	switch event.EventName {
@@ -23,7 +23,10 @@ func triggerEvent(event Event, config *config) {
 	case "Old man Shop":
 		p.events[event.EventName] = event
 		fmt.Println(event.EventDescription)
-		regularShopEvent(config)
+		err := regularShop(config)
+		if err != nil {
+			return err
+		}
 	case "Get Quest":
 		quests := []int{1, 2, 3}
 		chooseQuest(quests, config)
@@ -33,6 +36,7 @@ func triggerEvent(event Event, config *config) {
 		fmt.Println("You are now free to explore the world! Type !help for a list of commands and !playerinfo to see your stats.\nTo continue with the story reach Level 5 and the silver guild rank by doing quests.")
 		fmt.Println("-------------------------------")
 	}
+	return nil
 }
 
 func namePlayer(p *player) {

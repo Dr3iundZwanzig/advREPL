@@ -76,6 +76,7 @@ func chooseQuest(questIDs []int, config *config) {
 		}
 		config.player.currentQuests.hasQuest = true
 		config.player.currentQuests.currentQuest = config.quests[questID]
+		config.player.currentQuests.progress = 0
 		fmt.Println("You have taken the quest:", config.quests[questID].QuestName)
 		break
 	}

@@ -17,7 +17,7 @@ func commandHelp(config *config, _ ...string) error {
 	fmt.Println("Welcome to the Adv help page!")
 	fmt.Println("Usage:")
 	fmt.Println("Need to use ! in front of commands")
-	fmt.Println("To selcet a choice type the number infront of it")
+	fmt.Println("To selcet a choice type the number after !choice")
 	fmt.Println("---")
 	fmt.Println("Commands:")
 	for _, cmd := range getCommands() {
@@ -48,9 +48,7 @@ func commandPlayerInfo(config *config, _ ...string) error {
 func commandPlayerItems(config *config, _ ...string) error {
 	p := config.player
 	if len(p.items) == 0 {
-		fmt.Println("You have no items yet!")
-		fmt.Println("---")
-		return nil
+		return fmt.Errorf("You have no items")
 	}
 	fmt.Println("---")
 	fmt.Println("Player Items:")
@@ -63,13 +61,11 @@ func commandPlayerItems(config *config, _ ...string) error {
 
 func commandUseItem(config *config, args ...string) error {
 	if len(args) < 1 {
-		fmt.Println("Usage: !use [itemID]")
-		return nil
+		return fmt.Errorf("Usage: !use [itemID]")
 	}
 	itemID, err := strconv.Atoi(args[0])
 	if err != nil {
-		fmt.Println("Invalid item ID")
-		return nil
+		return fmt.Errorf("Invalid item ID")
 	}
 	config.player.useItem(itemID)
 	return nil
@@ -99,6 +95,7 @@ func commandQuestInfo(config *config, _ ...string) error {
 		return fmt.Errorf("You have no active quest.")
 	}
 	q := config.player.currentQuests.currentQuest
+	fmt.Println("---")
 	fmt.Println("Active quest:")
 	fmt.Printf("Name: %v\n", q.QuestName)
 	fmt.Printf("Description: %v\n", q.QuestDescription)
@@ -109,5 +106,40 @@ func commandQuestInfo(config *config, _ ...string) error {
 		item := config.items[reward.ItemID]
 		fmt.Printf("  - %v (Amount: %v)\n", item.ItemName, reward.Amount)
 	}
+	fmt.Println("---")
+	return nil
+}
+
+func commandGo(config *config, args ...string) error {
+	if config.player.currentChapter == 1 && config.player.currentStep < 4 {
+		return fmt.Errorf("Command not unlocked")
+	}
+	if len(args) < 1 {
+		return fmt.Errorf("missing location name")
+	}
+	locationName := args[0]
+	location, exists := getLocations()[locationName]
+	if !exists {
+		return fmt.Errorf("Unknown Location")
+	}
+	err := location.callback(config)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func commandLocations(config *config, args ...string) error {
+	if config.player.currentChapter == 1 && config.player.currentStep < 0 {
+		return fmt.Errorf("Command not unlocked")
+	}
+	locations := getLocations()
+	fmt.Println("Locations:")
+	fmt.Println("---")
+	for _, location := range locations {
+		fmt.Printf("Name: %v ", location.name)
+		fmt.Printf("/ %v\n", location.description)
+	}
+	fmt.Println("---")
 	return nil
 }

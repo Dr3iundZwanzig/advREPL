@@ -54,7 +54,10 @@ func continueStory(config *config) {
 	fmt.Println(currentStep.MainString)
 	if currentStep.HasEvent {
 		for _, event := range currentStep.Events {
-			triggerEvent(event, config)
+			err := triggerEvent(event, config)
+			if err != nil {
+				fmt.Println(err)
+			}
 		}
 	}
 	if currentStep.HasChoice {
