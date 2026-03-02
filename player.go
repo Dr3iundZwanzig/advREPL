@@ -34,12 +34,12 @@ type playerItem struct {
 }
 
 type playerExperience struct {
-	currentLevel      int
-	currentXP         int
-	nextLevelXP       int
-	currentGuildLevel int
-	currentGuildXP    int
-	nextGuildLevelXP  int
+	currentLevel     int
+	currentXP        int
+	nextLevelXP      int
+	currentGuildRank string
+	currentGuildXP   int
+	nextGuildLevelXP int
 }
 
 func createPlayer() player {
@@ -63,12 +63,12 @@ func createPlayer() player {
 			progress:     0,
 		},
 		experience: playerExperience{
-			currentLevel:      1,
-			currentXP:         0,
-			nextLevelXP:       100,
-			currentGuildLevel: 0,
-			currentGuildXP:    0,
-			nextGuildLevelXP:  100,
+			currentLevel:     1,
+			currentXP:        0,
+			nextLevelXP:      100,
+			currentGuildRank: "Unregistered",
+			currentGuildXP:   0,
+			nextGuildLevelXP: 100,
 		},
 	}
 	return char

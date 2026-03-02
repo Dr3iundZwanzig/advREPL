@@ -15,7 +15,7 @@ func triggerEvent(event Event, config *config) {
 	switch event.EventName {
 	case "Guild Registration":
 		p.events[event.EventName] = event
-		p.experience.currentGuildLevel = 1
+		p.experience.currentGuildRank = "Bronze"
 		p.addItem(config.items[1], 1)
 		p.addItem(config.items[3], 1)
 		fmt.Println(event.EventDescription)
@@ -26,7 +26,11 @@ func triggerEvent(event Event, config *config) {
 		regularShopEvent(config)
 	case "Get Quest":
 		fmt.Println(event.EventDescription)
-
+	case "Open World":
+		p.events[event.EventName] = event
+		fmt.Println("-------------------------------")
+		fmt.Println("You are now free to explore the world! Type !help for a list of commands and !playerinfo to see your stats.\nTo continue with the story reach Level 5 and the silver guild rank by doing quests.")
+		fmt.Println("-------------------------------")
 	}
 }
 

@@ -8,14 +8,15 @@ import (
 )
 
 type Quest struct {
-	QuestID          int    `json:"questID"`
-	QuestName        string `json:"questName"`
-	QuestType        string `json:"questType"`
-	QuestAmount      int    `json:"questAmount"`
-	QuestDescription string `json:"questDescription"`
-	QuestGoldReward  int    `json:"questGoldReward"`
-	Repeatable       bool   `json:"repeatable"`
-	QuestItemRewards []struct {
+	QuestID              int    `json:"questID"`
+	QuestName            string `json:"questName"`
+	QuestType            string `json:"questType"`
+	QuestAmount          int    `json:"questAmount"`
+	QuestDescription     string `json:"questDescription"`
+	QuestGoldReward      int    `json:"questGoldReward"`
+	Repeatable           bool   `json:"repeatable"`
+	QuestGuildExperience int    `json:"questGuildExperience"`
+	QuestItemRewards     []struct {
 		ItemID int `json:"itemID"`
 		Amount int `json:"amount"`
 	} `json:"questItemRewards"`

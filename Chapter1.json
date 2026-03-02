@@ -63,10 +63,10 @@
       ],
       "nextStep": null
     },
-{
+    {
       "stepNo": 3,
       "mainString": "You stand in front of a large bulletin board with numerous quests posted on it, each with a brief description, rank and reward.\nThe bronze badge you received will allow you to take one of the apprentice quests, most of them are about killing various monsters in the starting areas of the dungeon.",
-      "hasChoice": true,
+      "hasChoice": false,
       "hasEvent": true,
       "events": [
         {
@@ -75,11 +75,18 @@
           "eventRequirement": null
         }
       ],
-      "triggerChoice": [
+      "nextStep": 4
+    },
+    {
+      "stepNo": 4,
+      "mainString": "You step out of the guild now you can head to the dungeon to start your first quest or explore the city a bit more.",
+      "hasChoice": false,
+      "hasEvent": true,
+      "events": [
         {
-          "choiceText": "",
-          "choiceNextStep": 1,
-          "choiceRequirement": null
+          "eventName": "Open World",
+          "eventDescription": "You are now outside the guild and can explore the city or head to the dungeon to start your first quest.",
+          "eventRequirement": null
         }
       ],
       "nextStep": null

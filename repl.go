@@ -18,10 +18,13 @@ func startRepl(config *config) {
 	reader.Scan()
 
 	for {
+		currentStep := config.story.ChapterSteps[config.player.currentStep]
 		if !continues {
 			continueStory(config)
-		} else {
-			continues = false
+			if !currentStep.HasChoice && currentStep.NextStep != nil {
+				config.player.currentStep = *currentStep.NextStep
+				continue
+			}
 		}
 
 		fmt.Print("Adv >>> ")
@@ -29,6 +32,8 @@ func startRepl(config *config) {
 
 		userInput := cleanInput(reader.Text())
 		if len(userInput) == 0 {
+			fmt.Println("No input entered.")
+			continues = true
 			continue
 		}
 		// command input
@@ -48,7 +53,11 @@ func startRepl(config *config) {
 		if commandName == "!choice" {
 			continues = false
 		}
-		continue
+		if exists {
+			continue
+		}
+
+		fmt.Println("Unknown input, type !help for a list of commands")
 	}
 }
 

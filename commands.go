@@ -36,6 +36,10 @@ func commandPlayerInfo(config *config, _ ...string) error {
 	fmt.Printf("Mana: %v/%v\n", p.currentMana, p.maxMana)
 	fmt.Printf("Armour: %v\n", p.currentArmour)
 	fmt.Printf("Gold: %v\n", p.gold)
+	fmt.Printf("Level: %v\n", p.experience.currentLevel)
+	fmt.Printf("XP: %v/%v\n", p.experience.currentXP, p.experience.nextLevelXP)
+	fmt.Printf("Guild Rank: %v\n", p.experience.currentGuildRank)
+	fmt.Printf("Guild XP: %v/%v\n", p.experience.currentGuildXP, p.experience.nextGuildLevelXP)
 	fmt.Println("---")
 
 	return nil
@@ -80,6 +84,9 @@ func commandSelectChoice(config *config, args ...string) error {
 		return fmt.Errorf("invalid choice number")
 	}
 	currentStep := config.story.ChapterSteps[config.player.currentStep]
+	if !currentStep.HasChoice {
+		return fmt.Errorf("no choices available")
+	}
 	if choiceNumber < 1 || choiceNumber > len(currentStep.TriggerChoice) {
 		return fmt.Errorf("invalid choice number")
 	}

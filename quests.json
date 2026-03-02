@@ -8,6 +8,7 @@
             "questDescription": "Kill 5 rats inside the dungeon",
             "questGoldReward": 50,
             "repeatable": true,
+            "questGuildExperience": 20,
             "questItemRewards": [
                     { "itemID": 3, "amount": 1 }
             ]
@@ -20,6 +21,7 @@
             "questDescription": "Collect 5 healing herbs which can be found growing near water sources in the dungeon",
             "questGoldReward": 30,
             "repeatable": true,
+            "questGuildExperience": 20,
             "questItemRewards": [
                     { "itemID": 1, "amount": 2 }
             ]
