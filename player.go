@@ -18,11 +18,28 @@ type player struct {
 	currentStep    int
 	events         map[string]Event
 	items          map[int]*playerItem
+	currentQuests  playerQuest
+	experience     playerExperience
+}
+
+type playerQuest struct {
+	hasQuest     bool
+	currentQuest Quest
+	progress     int
 }
 
 type playerItem struct {
 	amount int
 	item   Item
+}
+
+type playerExperience struct {
+	currentLevel      int
+	currentXP         int
+	nextLevelXP       int
+	currentGuildLevel int
+	currentGuildXP    int
+	nextGuildLevelXP  int
 }
 
 func createPlayer() player {
@@ -40,6 +57,19 @@ func createPlayer() player {
 		currentStep:    0,
 		events:         map[string]Event{},
 		items:          map[int]*playerItem{},
+		currentQuests: playerQuest{
+			hasQuest:     false,
+			currentQuest: Quest{},
+			progress:     0,
+		},
+		experience: playerExperience{
+			currentLevel:      1,
+			currentXP:         0,
+			nextLevelXP:       100,
+			currentGuildLevel: 0,
+			currentGuildXP:    0,
+			nextGuildLevelXP:  100,
+		},
 	}
 	return char
 }

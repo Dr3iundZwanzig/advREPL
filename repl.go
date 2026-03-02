@@ -62,6 +62,7 @@ type config struct {
 	player player
 	items  map[int]Item
 	story  Story
+	quests map[int]Quest
 }
 
 type cliCommand struct {

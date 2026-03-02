@@ -15,6 +15,7 @@ func triggerEvent(event Event, config *config) {
 	switch event.EventName {
 	case "Guild Registration":
 		p.events[event.EventName] = event
+		p.experience.currentGuildLevel = 1
 		p.addItem(config.items[1], 1)
 		p.addItem(config.items[3], 1)
 		fmt.Println(event.EventDescription)
@@ -23,6 +24,9 @@ func triggerEvent(event Event, config *config) {
 		p.events[event.EventName] = event
 		fmt.Println(event.EventDescription)
 		regularShopEvent(config)
+	case "Get Quest":
+		fmt.Println(event.EventDescription)
+
 	}
 }
 
