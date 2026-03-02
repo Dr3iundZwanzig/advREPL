@@ -14,12 +14,13 @@ func triggerEvent(event Event, config *config) {
 	p := &config.player
 	switch event.EventName {
 	case "Guild Registration":
+		p.events[event.EventName] = event
 		p.addItem(config.items[1], 1)
 		p.addItem(config.items[3], 1)
 		fmt.Println(event.EventDescription)
-		p.events[event.EventName] = event
 		namePlayer(p)
 	case "Old man Shop":
+		p.events[event.EventName] = event
 		fmt.Println(event.EventDescription)
 		regularShopEvent(config)
 	}
