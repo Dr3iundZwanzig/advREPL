@@ -70,13 +70,13 @@ func chooseQuest(questIDs []int, config *config) {
 			fmt.Println("Quest with ID", questID, "does not exist.")
 			continue
 		}
-		if config.player.currentQuests.hasQuest == true {
+		if config.player.CurrentQuests.HasQuest == true {
 			fmt.Println("You already have an active quest. You can only have one active quest at a time.")
 			break
 		}
-		config.player.currentQuests.hasQuest = true
-		config.player.currentQuests.currentQuest = config.quests[questID]
-		config.player.currentQuests.progress = 0
+		config.player.CurrentQuests.HasQuest = true
+		config.player.CurrentQuests.CurrentQuest = config.quests[questID]
+		config.player.CurrentQuests.Progress = 0
 		fmt.Println("You have taken the quest:", config.quests[questID].QuestName)
 		break
 	}

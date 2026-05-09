@@ -50,11 +50,11 @@ func loadStory(fileName string) Story {
 }
 
 func continueStory(config *config) {
-	currentStep := config.story.ChapterSteps[config.player.currentStep]
+	currentStep := config.story.ChapterSteps[config.player.CurrentStep]
 	fmt.Println(currentStep.MainString)
 	if currentStep.HasEvent {
 		for _, event := range currentStep.Events {
-			err := triggerEvent(event, config)
+			err := triggerStoryEvent(event, config)
 			if err != nil {
 				fmt.Println(err)
 			}

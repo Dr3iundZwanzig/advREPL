@@ -41,7 +41,7 @@ func regularShop(config *config) error {
 	sort.Ints(keys)
 	fmt.Println("Use !close to exit the shop.")
 	fmt.Println("Enter the ID of the item you want to buy: ")
-	fmt.Printf("Your Gold: %v\n", config.player.gold)
+	fmt.Printf("Your Gold: %v\n", config.player.Gold)
 	for _, itemID := range keys {
 		item := shopItems[itemID]
 		fmt.Printf("ID: %v - %v (Cost: %v Gold, Amount: %v)\n", item.item.ItemID, item.item.ItemName, *item.item.ItemGoldCost, item.amount)
@@ -69,8 +69,8 @@ func regularShop(config *config) error {
 				fmt.Println("This item is out of stock.")
 				continue
 			}
-			if config.player.gold >= *shopItem.item.ItemGoldCost {
-				config.player.gold -= *shopItem.item.ItemGoldCost
+			if config.player.Gold >= *shopItem.item.ItemGoldCost {
+				config.player.Gold -= *shopItem.item.ItemGoldCost
 				config.player.addItem(shopItem.item, 1)
 				shopItems[itemID].amount -= 1
 				fmt.Print(shopItems[itemID].amount)
@@ -78,7 +78,7 @@ func regularShop(config *config) error {
 
 				}
 				fmt.Printf("You bought %v for %v gold.\n", shopItem.item.ItemName, *shopItem.item.ItemGoldCost)
-				fmt.Printf("Your remaining gold: %v\n", config.player.gold)
+				fmt.Printf("Your remaining gold: %v\n", config.player.Gold)
 				for _, itemID := range keys {
 					item := shopItems[itemID]
 					fmt.Printf("ID: %v - %v (Cost: %v Gold, Amount: %v)\n", item.item.ItemID, item.item.ItemName, *item.item.ItemGoldCost, item.amount)

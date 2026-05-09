@@ -17,7 +17,7 @@ func main() {
 	config := config{
 		player: p,
 		items:  items,
-		story:  loadStory(fmt.Sprintf("Chapter%v.json", p.currentChapter)),
+		story:  loadStory(fmt.Sprintf("Chapter%v.json", p.CurrentChapter)),
 		quests: quests,
 	}
 	startRepl(&config)

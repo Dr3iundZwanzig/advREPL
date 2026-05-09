@@ -18,11 +18,11 @@ func startRepl(config *config) {
 	reader.Scan()
 
 	for {
-		currentStep := config.story.ChapterSteps[config.player.currentStep]
+		currentStep := config.story.ChapterSteps[config.player.CurrentStep]
 		if !continues {
 			continueStory(config)
 			if !currentStep.HasChoice && currentStep.NextStep != nil {
-				config.player.currentStep = *currentStep.NextStep
+				config.player.CurrentStep = *currentStep.NextStep
 				continue
 			}
 		}
@@ -42,7 +42,7 @@ func startRepl(config *config) {
 		continues = true
 		command, exists := getCommands()[commandName]
 		if !exists {
-			println("Unknown command")
+			println("Unknown command: " + commandName + ", type !help for a list of commands")
 			continue
 		}
 		err := command.callback(config, args...)
@@ -68,7 +68,7 @@ func cleanInput(text string) []string {
 }
 
 type config struct {
-	player player
+	player Player
 	items  map[int]Item
 	story  Story
 	quests map[int]Quest
@@ -90,8 +90,13 @@ func getLocations() map[string]location {
 	return map[string]location{
 		"shop": {
 			name:        "shop",
-			description: "A shop",
+			description: "A shop to buy items from",
 			callback:    regularShop,
+		},
+		"dungeon": {
+			name:        "dungeon",
+			description: "The dungeons inside the tree",
+			callback:    dungeon,
 		},
 	}
 }
@@ -135,13 +140,33 @@ func getCommands() map[string]cliCommand {
 		},
 		"!go": {
 			name:        "!go",
-			description: "Go to the given Location",
+			description: "Go to the given Location (cannot be uses in the dungeon)",
 			callback:    commandGo,
 		},
 		"!locations": {
 			name:        "!locations",
 			description: "Show all the Locations",
 			callback:    commandLocations,
+		},
+		"!explore": {
+			name:        "!explore",
+			description: "Explore the dungeon further (only works in the dungeon)",
+			callback:    commandExplore,
+		},
+		"!save": {
+			name:        "!save",
+			description: "Save the current game state",
+			callback:    commandSave,
+		},
+		"!load": {
+			name:        "!load",
+			description: "Load a saved game state",
+			callback:    commandLoad,
+		},
+		"!leavedungeon": {
+			name:        "!leavedungeon",
+			description: "Leave the dungeon and return to the city",
+			callback:    commandLeaveDungeon,
 		},
 	}
 }

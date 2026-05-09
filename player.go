@@ -4,115 +4,117 @@ import (
 	"fmt"
 )
 
-type player struct {
-	playerName     string
-	gold           int
-	maxHealth      int
-	currentHealth  int
-	maxMana        int
-	currentMana    int
-	currentArmour  int
-	currentAttack  int
-	currentAct     int
-	currentChapter int
-	currentStep    int
-	events         map[string]Event
-	items          map[int]*playerItem
-	currentQuests  playerQuest
-	experience     playerExperience
+type Player struct {
+	PlayerName        string              `json:"playerName"`
+	Gold              int                 `json:"gold"`
+	MaxHealth         int                 `json:"maxHealth"`
+	CurrentHealth     int                 `json:"currentHealth"`
+	MaxMana           int                 `json:"maxMana"`
+	CurrentMana       int                 `json:"currentMana"`
+	CurrentArmour     int                 `json:"currentArmour"`
+	CurrentAttack     int                 `json:"currentAttack"`
+	CurrentAct        int                 `json:"currentAct"`
+	CurrentChapter    int                 `json:"currentChapter"`
+	CurrentStep       int                 `json:"currentStep"`
+	InDungeon         bool                `json:"inDungeon"`
+	Events            map[string]Event    `json:"events"`
+	Items             map[int]*PlayerItem `json:"items"`
+	CurrentQuests     PlayerQuest         `json:"currentQuests"`
+	CurrentExperience PlayerExperience    `json:"experience"`
 }
 
-type playerQuest struct {
-	hasQuest     bool
-	currentQuest Quest
-	progress     int
+type PlayerQuest struct {
+	HasQuest     bool  `json:"hasQuest"`
+	CurrentQuest Quest `json:"currentQuest"`
+	Progress     int   `json:"progress"`
 }
 
-type playerItem struct {
-	amount int
-	item   Item
+type PlayerItem struct {
+	Amount int  `json:"amount"`
+	Item   Item `json:"item"`
 }
 
-type playerExperience struct {
-	currentLevel     int
-	currentXP        int
-	nextLevelXP      int
-	currentGuildRank string
-	currentGuildXP   int
-	nextGuildLevelXP int
+type PlayerExperience struct {
+	CurrentLevel     int    `json:"currentLevel"`
+	CurrentXP        int    `json:"currentXP"`
+	NextLevelXP      int    `json:"nextLevelXP"`
+	CurrentGuildRank string `json:"currentGuildRank"`
+	CurrentGuildXP   int    `json:"currentGuildXP"`
+	NextGuildLevelXP int    `json:"nextGuildLevelXP"`
 }
 
-func createPlayer() player {
-	char := player{
-		playerName:     "nameless",
-		gold:           100,
-		maxHealth:      50,
-		currentHealth:  50,
-		maxMana:        20,
-		currentMana:    5,
-		currentArmour:  0,
-		currentAttack:  5,
-		currentAct:     1,
-		currentChapter: 1,
-		currentStep:    0,
-		events:         map[string]Event{},
-		items:          map[int]*playerItem{},
-		currentQuests: playerQuest{
-			hasQuest:     false,
-			currentQuest: Quest{},
-			progress:     0,
+func createPlayer() Player {
+	char := Player{
+		PlayerName:     "nameless",
+		Gold:           100,
+		MaxHealth:      50,
+		CurrentHealth:  50,
+		MaxMana:        20,
+		CurrentMana:    5,
+		CurrentArmour:  0,
+		CurrentAttack:  5,
+		CurrentAct:     1,
+		CurrentChapter: 1,
+		CurrentStep:    0,
+		InDungeon:      false,
+		Events:         map[string]Event{},
+		Items:          map[int]*PlayerItem{},
+		CurrentQuests: PlayerQuest{
+			HasQuest:     false,
+			CurrentQuest: Quest{},
+			Progress:     0,
 		},
-		experience: playerExperience{
-			currentLevel:     1,
-			currentXP:        0,
-			nextLevelXP:      100,
-			currentGuildRank: "Unregistered",
-			currentGuildXP:   0,
-			nextGuildLevelXP: 100,
+		CurrentExperience: PlayerExperience{
+			CurrentLevel:     1,
+			CurrentXP:        0,
+			NextLevelXP:      100,
+			CurrentGuildRank: "Unregistered",
+			CurrentGuildXP:   0,
+			NextGuildLevelXP: 100,
 		},
 	}
 	return char
 }
 
-func (player *player) addItem(item Item, amount int) {
-	if existingItem, ok := player.items[item.ItemID]; ok {
-		existingItem.amount += amount
+func (player *Player) addItem(item Item, amount int) {
+	if existingItem, ok := player.Items[item.ItemID]; ok {
+		existingItem.Amount += amount
 		fmt.Println("item up")
 		fmt.Println(amount)
 	} else {
 		fmt.Println("item NEW")
-		player.items[item.ItemID] = &playerItem{
-			amount: amount,
-			item:   item,
+		player.Items[item.ItemID] = &PlayerItem{
+			Amount: amount,
+			Item:   item,
 		}
 	}
 }
 
-func (player *player) useItem(itemID int) {
-	if existingItem, ok := player.items[itemID]; !ok {
+func (player *Player) useItem(itemID int) {
+	if existingItem, ok := player.Items[itemID]; !ok {
 		fmt.Printf("You don't have an item with the ID %v!\n", itemID)
 		return
 	} else {
-		if existingItem.item.ItemType != "Consumable" {
+		if existingItem.Item.ItemType != "Consumable" {
 			fmt.Printf("You cannot use this item!\n")
 			return
 		}
-		existingItem.amount -= 1
-		if existingItem.amount <= 0 {
-			delete(player.items, itemID)
+		existingItem.Amount -= 1
+		if existingItem.Amount <= 0 {
+			delete(player.Items, itemID)
 		}
-		effect := existingItem.item.ItemEffect
-		player.currentHealth += effect.HealthRestore
-		if player.currentHealth > player.maxHealth {
-			player.currentHealth = player.maxHealth
+		effect := existingItem.Item.ItemEffect
+		player.CurrentHealth += effect.HealthRestore
+		if player.CurrentHealth > player.MaxHealth {
+			player.CurrentHealth = player.MaxHealth
 		}
-		player.currentMana += effect.ManaRestore
-		if player.currentMana > player.maxMana {
-			player.currentMana = player.maxMana
+		player.CurrentMana += effect.ManaRestore
+		if player.CurrentMana > player.MaxMana {
+			player.CurrentMana = player.MaxMana
 		}
-		player.currentArmour += effect.DefenseBoost
-		player.currentAttack += effect.AttackBoost
-		fmt.Printf("You used %v!\n", existingItem.item.ItemName)
+		player.CurrentArmour += effect.DefenseBoost
+		player.CurrentAttack += effect.AttackBoost
+		fmt.Printf("You used %v!\n", existingItem.Item.ItemName)
 	}
 
 }
