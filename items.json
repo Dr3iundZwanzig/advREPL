@@ -6,6 +6,8 @@
             "itemDescription": "A potion that restores health.",
             "itemType": "Consumable",
             "itemGoldCost": 10,
+            "itemDropChance": 0.2,
+            "sellable": true,
             "itemEffect": {
                 "healthRestore": 25
             }
@@ -16,6 +18,8 @@
             "itemDescription": "A potion that restores mana.",
             "itemType": "Consumable",
             "itemGoldCost": 10,
+            "itemDropChance": 0.1,
+            "sellable": true,
             "itemEffect": {
                 "manaRestore": 5
             }
@@ -26,6 +30,8 @@
             "itemDescription": "Simple badge given to new guild members.",
             "itemType": "Trinket",
             "itemGoldCost": null,
+            "itemDropChance": 0,
+            "sellable": false,
             "itemEffect": null
         }
     ]

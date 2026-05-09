@@ -20,7 +20,9 @@ type Item struct {
 	ItemDescription string      `json:"itemDescription"`
 	ItemType        string      `json:"itemType"`
 	ItemGoldCost    *int        `json:"itemGoldCost"`
+	ItemDropChance  float64     `json:"itemDropChance"`
 	ItemEffect      *ItemEffect `json:"itemEffect"`
+	Sellable        bool        `json:"sellable"`
 }
 
 type ItemCollection struct {

@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math/rand"
 	"os"
 )
 
@@ -55,8 +56,31 @@ func triggerDungeonEvent(room room, config *config) error {
 		fmt.Println(room.description)
 		return nil
 	case "treasure":
-		fmt.Println(room.description)
+		err := treasureEvent(config)
+		if err != nil {
+			return err
+		}
 		return nil
 	}
+	return nil
+}
+
+func treasureEvent(config *config) error {
+	fmt.Println("You found a treasure chest!")
+	randNum := rand.Float64()
+	fmt.Println(randNum)
+	var foundItem Item
+	for _, item := range config.items {
+		if randNum <= item.ItemDropChance {
+			foundItem = item
+			break
+		}
+	}
+	if foundItem.ItemID != 0 {
+		fmt.Printf("You found a %v!\n", foundItem.ItemName)
+		config.player.addItem(foundItem, 1)
+		return nil
+	}
+	fmt.Println("The chest was empty.")
 	return nil
 }
