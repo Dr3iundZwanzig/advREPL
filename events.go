@@ -50,10 +50,16 @@ func namePlayer(p *Player) {
 func triggerDungeonEvent(room room, config *config) error {
 	switch room.name {
 	case "normalfight":
-		fmt.Println(room.description)
+		err := triggerFight(config, room)
+		if err != nil {
+			return err
+		}
 		return nil
 	case "hardfight":
-		fmt.Println(room.description)
+		err := triggerFight(config, room)
+		if err != nil {
+			return err
+		}
 		return nil
 	case "treasure":
 		err := treasureEvent(config)

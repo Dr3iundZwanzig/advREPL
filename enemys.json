@@ -1,0 +1,44 @@
+{
+    "normalEnemys": {
+        "goblin": {
+            "name": "Goblin",
+            "hp": 30,
+            "attack": 5,
+            "defense": 0,
+            "description": "A small green creature.",
+            "spawnChance": 0.5,
+            "experience": 10
+        },
+        "orc": {
+            "name": "Orc",
+            "hp": 50,
+            "attack": 4,
+            "defense": 5,
+            "description": "A large muscular humanoid.",
+            "spawnChance": 0.5,
+            "experience": 10
+        }
+    },
+    "hardEnemys": {
+        "troll": {
+            "name": "Troll",
+            "hp": 80,
+            "attack": 10,
+            "defense": 10,
+            "description": "A giant slow-moving creature.",
+            "spawnChance": 0.5,
+            "experience": 30
+        }
+    },
+    "bossEnemys": {
+        "balrog": {
+            "name": "Balrog",
+            "hp": 200,
+            "attack": 25,
+            "defense": 20,
+            "description": "A powerful demon",
+            "spawnChance": 0.5,
+            "experience": 100
+        }
+    }
+}

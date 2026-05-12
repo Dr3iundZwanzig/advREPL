@@ -72,6 +72,7 @@ type config struct {
 	items  map[int]Item
 	story  Story
 	quests map[int]Quest
+	enemys EnemyCollection
 }
 
 type cliCommand struct {

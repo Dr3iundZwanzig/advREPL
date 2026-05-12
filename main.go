@@ -19,6 +19,7 @@ func main() {
 		items:  items,
 		story:  loadStory(fmt.Sprintf("Chapter%v.json", p.CurrentChapter)),
 		quests: quests,
+		enemys: loadEnemys(),
 	}
 	startRepl(&config)
 }

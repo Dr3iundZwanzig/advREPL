@@ -52,7 +52,7 @@ func createPlayer() Player {
 		MaxMana:        20,
 		CurrentMana:    5,
 		CurrentArmour:  0,
-		CurrentAttack:  5,
+		CurrentAttack:  15,
 		CurrentAct:     1,
 		CurrentChapter: 1,
 		CurrentStep:    0,
