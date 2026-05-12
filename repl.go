@@ -99,6 +99,11 @@ func getLocations() map[string]location {
 			description: "The dungeons inside the tree",
 			callback:    dungeon,
 		},
+		"statue": {
+			name:        "statue",
+			description: "A mysterious statue that allows the player to level up",
+			callback:    statue,
+		},
 	}
 }
 
