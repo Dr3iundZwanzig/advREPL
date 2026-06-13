@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 )
 
 type ItemEffect struct {
@@ -29,14 +28,9 @@ type ItemCollection struct {
 	Items []Item `json:"items"`
 }
 
-func loadItems() ItemCollection {
-	file, err := os.ReadFile("items.json")
-	if err != nil {
-		log.Fatal(fmt.Errorf("Error opening file items.json: %v", err))
-	}
-
+func loadItems(file []byte) ItemCollection {
 	var collection ItemCollection
-	err = json.Unmarshal(file, &collection)
+	err := json.Unmarshal(file, &collection)
 	if err != nil {
 		log.Fatal(fmt.Errorf("Error creating struct from items.json: %v", err))
 	}

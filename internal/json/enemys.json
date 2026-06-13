@@ -15,8 +15,17 @@
             "attack": 4,
             "defense": 5,
             "description": "A large muscular humanoid.",
-            "spawnChance": 0.5,
+            "spawnChance": 0.4,
             "experience": 10
+        },
+        "rat": {
+            "name": "Rat",
+            "hp": 20,
+            "attack": 3,
+            "defense": 0,
+            "description": "A small rodents.",
+            "spawnChance": 0.7,
+            "experience": 5
         }
     },
     "hardEnemys": {

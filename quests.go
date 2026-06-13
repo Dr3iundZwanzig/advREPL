@@ -13,6 +13,7 @@ type Quest struct {
 	QuestID              int    `json:"questID"`
 	QuestName            string `json:"questName"`
 	QuestType            string `json:"questType"`
+	QuestObjective       string `json:"questObjective"`
 	QuestAmount          int    `json:"questAmount"`
 	QuestDescription     string `json:"questDescription"`
 	QuestGoldReward      int    `json:"questGoldReward"`
@@ -28,14 +29,9 @@ type QuestCollection struct {
 	Quests []Quest `json:"quests"`
 }
 
-func loadQuests() QuestCollection {
-	file, err := os.ReadFile("quests.json")
-	if err != nil {
-		log.Fatal(fmt.Errorf("Error opening file quests.json: %v", err))
-	}
-
+func loadQuests(file []byte) QuestCollection {
 	var quests QuestCollection
-	err = json.Unmarshal(file, &quests)
+	err := json.Unmarshal(file, &quests)
 	if err != nil {
 		log.Fatal(fmt.Errorf("Error creating struct from quests.json: %v", err))
 	}
@@ -80,4 +76,35 @@ func chooseQuest(questIDs []int, config *config) {
 		fmt.Println("You have taken the quest:", config.quests[questID].QuestName)
 		break
 	}
+}
+func questComplete(config *config) bool {
+	player := config.player
+	if player.CurrentQuests.HasQuest && player.CurrentQuests.Progress >= player.CurrentQuests.CurrentQuest.QuestAmount {
+		return true
+	}
+	return false
+}
+
+func resetQuest(config *config) {
+	config.player.CurrentQuests = PlayerQuest{
+		HasQuest:     false,
+		CurrentQuest: Quest{},
+		Progress:     0,
+	}
+}
+
+func currentQuestData(config *config) {
+	if !config.player.CurrentQuests.HasQuest {
+		fmt.Println("You dont have any quest active")
+	}
+	quest := config.player.CurrentQuests.CurrentQuest
+	fmt.Println("Current quest information:")
+	fmt.Printf("Quest name: %v\n", quest.QuestName)
+	fmt.Printf("Quest description: %v\n", quest.QuestDescription)
+	fmt.Printf("Rewards:\n -Gold: %v\n -Guild experience: %v\n", quest.QuestGoldReward, quest.QuestGuildExperience)
+	fmt.Println(" -Items: ")
+	for _, item := range quest.QuestItemRewards {
+		fmt.Printf("  -%v / Amount: %v\n", config.items[item.ItemID].ItemName, item.Amount)
+	}
+	fmt.Printf("Quest progress: %v/%v\n", config.player.CurrentQuests.Progress, quest.QuestAmount)
 }

@@ -29,16 +29,16 @@ func triggerFight(config *config, room room) error {
 			break
 		}
 	}
-	fmt.Printf("You have encountered %v\n", currentEnemy.Name)
+	fmt.Printf("You have encountered a %v with %v\n", room.name, currentEnemy.Name)
 	fmt.Println("Current commands avalible:")
 	fmt.Println("!attack / attacks the enemy with your current attack value")
 	fmt.Println("!defend / increase your armour by 10-30 for this fight taking damage reduces this amount by the damage dealt")
 	fmt.Println("!flee / attempt to flee the fight")
-	fmt.Println("you cannot use items during a fight")
-	fmt.Println("the enemy and you will take turns monsters have a higher chance to attack")
+	fmt.Println("You cannot use items during a fight")
+	fmt.Println("The enemy and you will take turns monsters have a higher chance to attack")
 
 	for {
-		fleeChance := rand.Intn(50) + rand.Intn(player.CurrentHealth)
+		fleeChance := rand.Intn(50) + rand.Intn(player.CurrentHealth/2)
 		fmt.Printf("P: Your life: %v\n", player.CurrentHealth)
 		fmt.Printf("P: Your armour: %v\n", player.CurrentArmour)
 		fmt.Printf("E: Enemy life: %v\n", currentEnemy.Hp)
@@ -72,6 +72,12 @@ func triggerFight(config *config, room room) error {
 			if player.CurrentExperience.CurrentXP >= player.CurrentExperience.NextLevelXP {
 				fmt.Println("***Ready to level up visit the statue in town")
 				player.CurrentExperience.CurrentXP = player.CurrentExperience.NextLevelXP
+			}
+			if player.CurrentQuests.HasQuest && player.CurrentQuests.CurrentQuest.QuestObjective == currentEnemy.Name {
+				player.CurrentQuests.Progress += 1
+				if questComplete(config) {
+					fmt.Println("***Quest completed return to the guild to turn it in***")
+				}
 			}
 			return nil
 		}

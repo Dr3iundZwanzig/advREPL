@@ -33,6 +33,26 @@
             "itemDropChance": 0,
             "sellable": false,
             "itemEffect": null
+        },
+        {
+            "itemID": 4,
+            "itemName": "Gold Pouch(small)",
+            "itemDescription": "Small puch of gold.",
+            "itemType": "Valuable",
+            "itemGoldCost": 50,
+            "itemDropChance": 0.3,
+            "sellable": true,
+            "itemEffect": null
+        },
+        {
+            "itemID": 5,
+            "itemName": "Gold Pouch(large)",
+            "itemDescription": "Large puch of gold.",
+            "itemType": "Valuable",
+            "itemGoldCost": 100,
+            "itemDropChance": 0.1,
+            "sellable": true,
+            "itemEffect": null
         }
     ]
 }

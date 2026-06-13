@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 )
 
 type EnemyCollection struct {
@@ -22,14 +21,10 @@ type Enemy struct {
 	Experience  int     `json:"experience"`
 }
 
-func loadEnemys() EnemyCollection {
-	file, err := os.ReadFile("enemys.json")
-	if err != nil {
-		log.Fatal(fmt.Errorf("Error opening file quests.json: %v", err))
-	}
+func loadEnemys(file []byte) EnemyCollection {
 
 	var enemys EnemyCollection
-	err = json.Unmarshal(file, &enemys)
+	err := json.Unmarshal(file, &enemys)
 	if err != nil {
 		log.Fatal(fmt.Errorf("Error creating struct from quests.json: %v", err))
 	}

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 )
 
 type Story struct {
@@ -35,16 +34,11 @@ type Event struct {
 	EventRequirement *string `json:"eventRequirement"` // nil when null only present when requirements are needed
 }
 
-func loadStory(fileName string) Story {
-	file, err := os.ReadFile(fileName)
-	if err != nil {
-		log.Fatal(fmt.Errorf("Error opening file: %v", err))
-	}
-
+func loadStory(file []byte) Story {
 	var story Story
-	err = json.Unmarshal(file, &story)
+	err := json.Unmarshal(file, &story)
 	if err != nil {
-		log.Fatal(fmt.Errorf("Error creating struct from %v: %v", fileName, err))
+		log.Fatal(fmt.Errorf("Error unmashaling story JSON: %v", err))
 	}
 	return story
 }

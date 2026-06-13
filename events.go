@@ -62,21 +62,20 @@ func triggerDungeonEvent(room room, config *config) error {
 		}
 		return nil
 	case "treasure":
-		err := treasureEvent(config)
-		if err != nil {
-			return err
-		}
+		treasureEvent(config)
 		return nil
 	}
 	return nil
 }
 
-func treasureEvent(config *config) error {
+func treasureEvent(config *config) {
 	fmt.Println("You found a treasure chest!")
 	randNum := rand.Float64()
-	fmt.Println(randNum)
 	var foundItem Item
 	for _, item := range config.items {
+		if item.ItemDropChance == 0 {
+			continue
+		}
 		if randNum <= item.ItemDropChance {
 			foundItem = item
 			break
@@ -85,8 +84,7 @@ func treasureEvent(config *config) error {
 	if foundItem.ItemID != 0 {
 		fmt.Printf("You found a %v!\n", foundItem.ItemName)
 		config.player.addItem(foundItem, 1)
-		return nil
+		return
 	}
 	fmt.Println("The chest was empty.")
-	return nil
 }
