@@ -69,16 +69,17 @@ func cleanInput(text string) []string {
 
 type config struct {
 	player Player
-	items  map[int]Item
+	items  ItemCollection
 	story  Story
-	quests map[int]Quest
+	quests QuestCollection
 	enemys EnemyCollection
 }
 
 type cliCommand struct {
-	name        string
-	description string
-	callback    func(*config, ...string) error
+	name            string
+	description     string
+	canUseInDungeon bool
+	callback        func(*config, ...string) error
 }
 
 type location struct {
@@ -89,10 +90,10 @@ type location struct {
 
 func getLocations() map[string]location {
 	return map[string]location{
-		"shop": {
-			name:        "shop",
+		"consumableShop": {
+			name:        "Consumable Shop",
 			description: "A shop to buy items from",
-			callback:    regularShop,
+			callback:    consumableShop,
 		},
 		"dungeon": {
 			name:        "dungeon",
@@ -115,69 +116,82 @@ func getLocations() map[string]location {
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
 		"!help": {
-			name:        "!help",
-			description: "Displays a help message",
-			callback:    commandHelp,
+			name:            "!help",
+			description:     "Displays a help message",
+			canUseInDungeon: true,
+			callback:        commandHelp,
 		},
 		"!exit": {
-			name:        "!exit",
-			description: "Exit the Programm",
-			callback:    commandExit,
+			name:            "!exit",
+			description:     "Exit the Programm",
+			canUseInDungeon: false,
+			callback:        commandExit,
 		},
 		"!player": {
-			name:        "!player",
-			description: "Displayes player information",
-			callback:    commandPlayerInfo,
+			name:            "!player",
+			description:     "Displayes player information",
+			canUseInDungeon: true,
+			callback:        commandPlayerInfo,
 		},
 		"!items": {
-			name:        "!items",
-			description: "Displayes player items",
-			callback:    commandPlayerItems,
+			name:            "!items",
+			description:     "Displayes player items",
+			canUseInDungeon: true,
+			callback:        commandPlayerItems,
 		},
 		"!use": {
-			name:        "!use",
-			description: "Use an item from your inventory. Usage: !use [itemID]",
-			callback:    commandUseItem,
+			name:            "!use",
+			description:     "Use an item from your inventory. Usage: !use [itemID]",
+			canUseInDungeon: true,
+			callback:        commandUseItem,
 		},
 		"!choice": {
-			name:        "!choice",
-			description: "Select a choice. Usage: !choice [choiceNumber]",
-			callback:    commandSelectChoice,
+			name:            "!choice",
+			description:     "Select a choice. Usage: !choice [choiceNumber]",
+			canUseInDungeon: false,
+			callback:        commandSelectChoice,
 		},
 		"!quest": {
-			name:        "!quest",
-			description: "View current quest information",
-			callback:    commandQuestInfo,
+			name:            "!quest",
+			description:     "View current quest information",
+			canUseInDungeon: true,
+			callback:        commandQuestInfo,
 		},
 		"!go": {
-			name:        "!go",
-			description: "Go to the given Location (cannot be uses in the dungeon)",
-			callback:    commandGo,
+			name:            "!go",
+			description:     "Go to the given Location (cannot be uses in the dungeon)",
+			canUseInDungeon: false,
+			callback:        commandGo,
 		},
 		"!locations": {
-			name:        "!locations",
-			description: "Show all the Locations",
-			callback:    commandLocations,
+			name:            "!locations",
+			description:     "Show all the Locations",
+			canUseInDungeon: false,
+			callback:        commandLocations,
 		},
 		"!explore": {
-			name:        "!explore",
-			description: "Explore the dungeon further (only works in the dungeon)",
-			callback:    commandExplore,
+			name:            "!explore",
+			description:     "Explore the dungeon further (only works in the dungeon)",
+			canUseInDungeon: true,
+			callback:        commandExplore,
 		},
 		"!save": {
-			name:        "!save",
-			description: "Save the current game state",
-			callback:    commandSave,
+			name:            "!save",
+			description:     "Save the current game state",
+			canUseInDungeon: false,
+			callback:        commandSave,
 		},
 		"!load": {
-			name:        "!load",
-			description: "Load a saved game state",
-			callback:    commandLoad,
+			name:            "!load",
+			description:     "Load a saved game state",
+			canUseInDungeon: false,
+			callback:        commandLoad,
 		},
 		"!leavedungeon": {
-			name:        "!leavedungeon",
-			description: "Leave the dungeon and return to the city",
-			callback:    commandLeaveDungeon,
+			name:            "!leavedungeon",
+			description:     "Leave the dungeon and return to the city",
+			canUseInDungeon: true,
+			callback:        commandLeaveDungeon,
 		},
 	}
 }

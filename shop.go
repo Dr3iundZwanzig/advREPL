@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"sort"
 	"strconv"
 )
 
@@ -13,40 +12,31 @@ type ShopItems struct {
 	item   Item
 }
 
-func fillShopItems(config *config, itemIDs []int) (map[int]*ShopItems, error) {
+func loadConsumables(config *config) (map[int]*ShopItems, error) {
 	shopItems := make(map[int]*ShopItems)
-	for _, itemID := range itemIDs {
-		if item, ok := config.items[itemID]; ok {
-			shopItems[itemID] = &ShopItems{
-				amount: 5,
-				item:   item,
-			}
-		} else {
-			return nil, fmt.Errorf("Item with ID %v not found in config", itemID)
+	for _, consumables := range config.items.Consumables {
+		shopItems[consumables.ItemID] = &ShopItems{
+			amount: 5,
+			item:   consumables,
 		}
 	}
 	return shopItems, nil
 }
 
-func regularShop(config *config) error {
+func consumableShop(config *config) error {
 	reader := bufio.NewScanner(os.Stdin)
-	shopItems, ok := fillShopItems(config, []int{1, 2})
+	shopItems, ok := loadConsumables(config)
 	if ok != nil {
 		return ok
 	}
-	keys := make([]int, 0, len(shopItems))
-	for k := range shopItems {
-		keys = append(keys, k)
-	}
-	sort.Ints(keys)
 	fmt.Println("Use !close to exit the shop.")
 	fmt.Println("Enter the ID of the item you want to buy: ")
 	fmt.Printf("Your Gold: %v\n", config.player.Gold)
-	for _, itemID := range keys {
-		item := shopItems[itemID]
-		fmt.Printf("ID: %v - %v (Cost: %v Gold, Amount: %v)\n", item.item.ItemID, item.item.ItemName, *item.item.ItemGoldCost, item.amount)
-	}
 	for {
+		fmt.Println("Consumables to buy:")
+		for id, item := range shopItems {
+			fmt.Printf(" -ID: %v - Name: %v (Cost: %v Gold, Amount: %v)\n", id, item.item.Name, *item.item.GoldCost, item.amount)
+		}
 		fmt.Print("ShopBuy >>> ")
 		reader.Scan()
 		result := reader.Text()
@@ -75,20 +65,13 @@ func regularShop(config *config) error {
 				fmt.Println("This item is out of stock.")
 				continue
 			}
-			if config.player.Gold >= *shopItem.item.ItemGoldCost {
-				config.player.Gold -= *shopItem.item.ItemGoldCost
+			if config.player.Gold >= *shopItem.item.GoldCost {
+				config.player.Gold -= *shopItem.item.GoldCost
 				config.player.addItem(shopItem.item, 1)
 				shopItems[itemID].amount -= 1
 				fmt.Print(shopItems[itemID].amount)
-				if shopItems[itemID].amount == 0 {
-
-				}
-				fmt.Printf("You bought %v for %v gold.\n", shopItem.item.ItemName, *shopItem.item.ItemGoldCost)
+				fmt.Printf("You bought %v for %v gold.\n", shopItem.item.Name, *shopItem.item.GoldCost)
 				fmt.Printf("Your remaining gold: %v\n", config.player.Gold)
-				for _, itemID := range keys {
-					item := shopItems[itemID]
-					fmt.Printf("ID: %v - %v (Cost: %v Gold, Amount: %v)\n", item.item.ItemID, item.item.ItemName, *item.item.ItemGoldCost, item.amount)
-				}
 			} else {
 				fmt.Println("You don't have enough gold.")
 			}
@@ -111,7 +94,7 @@ func sell(config *config) error {
 		if !items.Item.Sellable {
 			continue
 		}
-		fmt.Printf("ID:%v -%v (Amount: %v)\n", itemID, items.Item.ItemName, items.Amount)
+		fmt.Printf("ID:%v -%v (Amount: %v)\n", itemID, items.Item.Name, items.Amount)
 	}
 	for {
 		fmt.Print("ShopSell >>> ")
@@ -135,9 +118,9 @@ func sell(config *config) error {
 				fmt.Println("This item cannot be sold.")
 				continue
 			}
-			p.Gold += *item.Item.ItemGoldCost / 2
+			p.Gold += *item.Item.GoldCost / 2
 			delete(p.Items, itemID)
-			fmt.Printf("You sold %v for %v gold.\n", item.Item.ItemName, *item.Item.ItemGoldCost/2)
+			fmt.Printf("You sold %v for %v gold.\n", item.Item.Name, *item.Item.GoldCost/2)
 			fmt.Printf("Your current gold: %v\n", p.Gold)
 			if len(p.Items) == 0 {
 				fmt.Println("You have no more items to sell.")
@@ -147,7 +130,7 @@ func sell(config *config) error {
 				if !items.Item.Sellable {
 					continue
 				}
-				fmt.Printf("ID:%v -%v (Amount: %v)\n", itemID, items.Item.ItemName, items.Amount)
+				fmt.Printf("ID:%v -%v (Amount: %v)\n", itemID, items.Item.Name, items.Amount)
 			}
 		} else {
 			fmt.Println("Invalid item ID.")

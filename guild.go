@@ -8,7 +8,6 @@ import (
 
 func guild(config *config) error {
 	player := config.player
-	simpleQuests := []int{1, 2, 3} // change quest later with guild rank
 	reader := bufio.NewScanner(os.Stdin)
 	fmt.Println("You enter the guild throu the main entrance and stand in the lobby.")
 	fmt.Println("Your guild rank can be checked with the !player command outside the guild")
@@ -25,20 +24,21 @@ func guild(config *config) error {
 			return nil
 		}
 		if userInput[0] == "!quest" {
+			if questComplete(config) {
+				fmt.Printf("Quest %v finished\n", player.CurrentQuests.CurrentQuest.Name)
+				resetQuest(config)
+				continue
+			}
+			if player.CurrentQuests.HasQuest {
+				fmt.Println("---Current quest is unfinished")
+				currentQuestData(config)
+				continue
+			}
 			if !player.CurrentQuests.HasQuest {
 				fmt.Println("You dont have a quest currently choose a new one now")
-				chooseQuest(simpleQuests, config)
+				chooseQuest(config)
 				continue
 			}
-			if questComplete(config) {
-				fmt.Printf("Quest %v finished\n", player.CurrentQuests.CurrentQuest.QuestName)
-				resetQuest(config)
-				chooseQuest(simpleQuests, config)
-				continue
-			}
-			fmt.Println("---Current quest is unfinished")
-			currentQuestData(config)
-			continue
 		}
 		fmt.Println("wrong command")
 	}

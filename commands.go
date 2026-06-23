@@ -56,7 +56,7 @@ func commandPlayerItems(config *config, _ ...string) error {
 	fmt.Println("---")
 	fmt.Println("Player Items:")
 	for itemID, items := range p.Items {
-		fmt.Printf("ID:%v -%v (Amount: %v)\n", itemID, items.Item.ItemName, items.Amount)
+		fmt.Printf("ID:%v -%v (Amount: %v)\n", itemID, items.Item.Name, items.Amount)
 	}
 	fmt.Println("---")
 	return nil
@@ -100,14 +100,15 @@ func commandQuestInfo(config *config, _ ...string) error {
 	q := config.player.CurrentQuests.CurrentQuest
 	fmt.Println("---")
 	fmt.Println("Active quest:")
-	fmt.Printf("Name: %v\n", q.QuestName)
-	fmt.Printf("Description: %v\n", q.QuestDescription)
-	fmt.Printf("Gold Reward: %v\n", q.QuestGoldReward)
-	fmt.Printf("Guild Experience Reward: %v\n", q.QuestGuildExperience)
+	fmt.Printf("Name: %v\n", q.Name)
+	fmt.Printf("Description: %v\n", q.Description)
+	fmt.Printf("Gold Reward: %v\n", q.GoldReward)
+	fmt.Printf("Guild Experience Reward: %v\n", q.GuildExperience)
 	fmt.Println("Item Reward:")
-	for _, reward := range q.QuestItemRewards {
-		item := config.items[reward.ItemID]
-		fmt.Printf("  - %v (Amount: %v)\n", item.ItemName, reward.Amount)
+	for _, reward := range q.ItemRewards {
+		if item, ok := config.items.GetItemByID(reward.ItemID); ok {
+			fmt.Printf("  - %v (Amount: %v)\n", item.Name, reward.Amount)
+		}
 	}
 	fmt.Println("---")
 	return nil

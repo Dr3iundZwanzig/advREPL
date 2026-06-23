@@ -1,58 +1,62 @@
 {
-    "items": [
-        {
+    "consumables": {
+        "health_potion": {
             "itemID": 1,
-            "itemName": "Health Potion",
-            "itemDescription": "A potion that restores health.",
-            "itemType": "Consumable",
-            "itemGoldCost": 10,
-            "itemDropChance": 0.2,
+            "name": "Health Potion",
+            "description": "A potion that restores health.",
+            "type": "Consumable",
+            "goldCost": 10,
+            "dropChance": 0.2,
             "sellable": true,
-            "itemEffect": {
+            "effect": {
                 "healthRestore": 25
             }
         },
-        {
+        "mana_potion": {
             "itemID": 2,
-            "itemName": "Mana Potion",
-            "itemDescription": "A potion that restores mana.",
-            "itemType": "Consumable",
-            "itemGoldCost": 10,
-            "itemDropChance": 0.1,
+            "name": "Mana Potion",
+            "description": "A potion that restores mana.",
+            "type": "Consumable",
+            "goldCost": 10,
+            "dropChance": 0.1,
             "sellable": true,
-            "itemEffect": {
+            "effect": {
                 "manaRestore": 5
             }
-        },
-        {
-            "itemID": 3,
-            "itemName": "Bronze Badge",
-            "itemDescription": "Simple badge given to new guild members.",
-            "itemType": "Trinket",
-            "itemGoldCost": null,
-            "itemDropChance": 0,
-            "sellable": false,
-            "itemEffect": null
-        },
-        {
-            "itemID": 4,
-            "itemName": "Gold Pouch(small)",
-            "itemDescription": "Small puch of gold.",
-            "itemType": "Valuable",
-            "itemGoldCost": 50,
-            "itemDropChance": 0.3,
-            "sellable": true,
-            "itemEffect": null
-        },
-        {
-            "itemID": 5,
-            "itemName": "Gold Pouch(large)",
-            "itemDescription": "Large puch of gold.",
-            "itemType": "Valuable",
-            "itemGoldCost": 100,
-            "itemDropChance": 0.1,
-            "sellable": true,
-            "itemEffect": null
         }
-    ]
+    },
+    "trinkets": {
+        "bronze_badge": {
+            "itemID": 3,
+            "name": "Bronze Badge",
+            "description": "Simple badge given to new guild members.",
+            "type": "Trinket",
+            "goldCost": null,
+            "dropChance": 0,
+            "sellable": false,
+            "effect": null
+        }
+    },
+    "valuables": {
+        "gold_pouch_small": {
+            "itemID": 4,
+            "name": "Gold Pouch(small)",
+            "description": "Small puch of gold.",
+            "type": "Valuable",
+            "goldCost": 50,
+            "dropChance": 0.3,
+            "sellable": true,
+            "effect": null
+        },
+        "gold_pouch_large": {
+            "itemID": 5,
+            "name": "Gold Pouch(large)",
+            "description": "Large puch of gold.",
+            "type": "Valuable",
+            "goldCost": 100,
+            "dropChance": 0.1,
+            "sellable": true,
+            "effect": null
+        }
+    }
 }

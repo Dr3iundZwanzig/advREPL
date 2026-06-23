@@ -79,15 +79,13 @@ func createPlayer() Player {
 func (player *Player) addItem(item Item, amount int) {
 	if existingItem, ok := player.Items[item.ItemID]; ok {
 		existingItem.Amount += amount
-		fmt.Println("item up")
-		fmt.Println(amount)
 	} else {
-		fmt.Println("item NEW")
 		player.Items[item.ItemID] = &PlayerItem{
 			Amount: amount,
 			Item:   item,
 		}
 	}
+	fmt.Printf("+++ Got item: %v\n", item.Name)
 }
 
 func (player *Player) useItem(itemID int) {
@@ -95,7 +93,7 @@ func (player *Player) useItem(itemID int) {
 		fmt.Printf("You don't have an item with the ID %v!\n", itemID)
 		return
 	} else {
-		if existingItem.Item.ItemType != "Consumable" {
+		if existingItem.Item.Type != "Consumable" {
 			fmt.Printf("You cannot use this item!\n")
 			return
 		}
@@ -103,18 +101,20 @@ func (player *Player) useItem(itemID int) {
 		if existingItem.Amount <= 0 {
 			delete(player.Items, itemID)
 		}
-		effect := existingItem.Item.ItemEffect
-		player.CurrentHealth += effect.HealthRestore
-		if player.CurrentHealth > player.MaxHealth {
-			player.CurrentHealth = player.MaxHealth
+		effect := existingItem.Item.Effect
+		if effect != nil {
+			player.CurrentHealth += effect.HealthRestore
+			if player.CurrentHealth > player.MaxHealth {
+				player.CurrentHealth = player.MaxHealth
+			}
+			player.CurrentMana += effect.ManaRestore
+			if player.CurrentMana > player.MaxMana {
+				player.CurrentMana = player.MaxMana
+			}
+			player.CurrentArmour += effect.DefenseBoost
+			player.CurrentAttack += effect.AttackBoost
 		}
-		player.CurrentMana += effect.ManaRestore
-		if player.CurrentMana > player.MaxMana {
-			player.CurrentMana = player.MaxMana
-		}
-		player.CurrentArmour += effect.DefenseBoost
-		player.CurrentAttack += effect.AttackBoost
-		fmt.Printf("You used %v!\n", existingItem.Item.ItemName)
+		fmt.Printf("You used %v!\n", existingItem.Item.Name)
 	}
 
 }

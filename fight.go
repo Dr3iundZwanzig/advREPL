@@ -73,7 +73,7 @@ func triggerFight(config *config, room room) error {
 				fmt.Println("***Ready to level up visit the statue in town")
 				player.CurrentExperience.CurrentXP = player.CurrentExperience.NextLevelXP
 			}
-			if player.CurrentQuests.HasQuest && player.CurrentQuests.CurrentQuest.QuestObjective == currentEnemy.Name {
+			if player.CurrentQuests.HasQuest && player.CurrentQuests.CurrentQuest.Objective == currentEnemy.Name {
 				player.CurrentQuests.Progress += 1
 				if questComplete(config) {
 					fmt.Println("***Quest completed return to the guild to turn it in***")

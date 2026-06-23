@@ -1,46 +1,45 @@
 {
-    "Quests": [
-        {
+    "killQuests": {
+        "kill_rats": {
             "questID": 1,
-            "questType": "Kill",
-            "questName": "Kill Rats",
-            "questObjective": "Rat",
-            "questAmount": 7,
-            "questDescription": "Kill 7 rats inside the dungeon",
-            "questGoldReward": 50,
+            "name": "Kill Rats",
+            "objective": "Rat",
+            "amount": 7,
+            "description": "Kill 7 rats inside the dungeon",
+            "goldReward": 50,
             "repeatable": true,
-            "questGuildExperience": 20,
-            "questItemRewards": [
-                    { "itemID": 3, "amount": 1 }
+            "guildExperience": 20,
+            "itemRewards": [
+                { "itemID": 2, "amount": 1 }
             ]
         },
-        {
-            "questID": 2,
-            "questType": "Fetch",
-            "questName": "Fetch Herbs",
-            "questObjective": "Herb Name",
-            "questAmount": 5,
-            "questDescription": "Collect 5 healing herbs which can be found growing near water sources in the dungeon",
-            "questGoldReward": 30,
-            "repeatable": true,
-            "questGuildExperience": 20,
-            "questItemRewards": [
-                    { "itemID": 2, "amount": 2 }
-            ]
-        },
-        {
+        "kill_goblins": {
             "questID": 3,
-            "questType": "Kill",
-            "questName": "Kill Goblins",
-            "questObjective": "Goblin",
-            "questAmount": 5,
-            "questDescription": "Kill 5 Goblins in the dungeon",
-            "questGoldReward": 50,
+            "name": "Kill Goblins",
+            "objective": "Goblin",
+            "amount": 5,
+            "description": "Kill 5 Goblins in the dungeon",
+            "goldReward": 50,
             "repeatable": true,
-            "questGuildExperience": 20,
-            "questItemRewards": [
-                    { "itemID": 2, "amount": 2 }
+            "guildExperience": 20,
+            "itemRewards": [
+                { "itemID": 2, "amount": 2 }
             ]
         }
-    ]
+    },
+    "fetchQuests": {
+        "fetch_herbs": {
+            "questID": 2,
+            "name": "Fetch Herbs",
+            "objective": "Herb Name",
+            "amount": 5,
+            "description": "Collect 5 healing herbs which can be found growing near water sources in the dungeon",
+            "goldReward": 30,
+            "repeatable": true,
+            "guildExperience": 20,
+            "itemRewards": [
+                { "itemID": 2, "amount": 2 }
+            ]
+        }
+    }
 }

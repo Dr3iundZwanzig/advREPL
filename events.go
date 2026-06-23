@@ -17,20 +17,19 @@ func triggerStoryEvent(event Event, config *config) error {
 	case "Guild Registration":
 		p.Events[event.EventName] = event
 		p.CurrentExperience.CurrentGuildRank = "Bronze"
-		p.addItem(config.items[1], 1)
-		p.addItem(config.items[3], 1)
+		p.addItem(config.items.Consumables["health_potion"], 1)
+		p.addItem(config.items.Trinkets["bronze_badge"], 1)
 		fmt.Println(event.EventDescription)
 		namePlayer(p)
 	case "Old man Shop":
 		p.Events[event.EventName] = event
 		fmt.Println(event.EventDescription)
-		err := regularShop(config)
+		err := consumableShop(config)
 		if err != nil {
 			return err
 		}
 	case "Get Quest":
-		quests := []int{1, 2, 3}
-		chooseQuest(quests, config)
+		chooseQuest(config)
 	case "Open World":
 		p.Events[event.EventName] = event
 		fmt.Println("-------------------------------")
@@ -70,21 +69,34 @@ func triggerDungeonEvent(room room, config *config) error {
 
 func treasureEvent(config *config) {
 	fmt.Println("You found a treasure chest!")
-	randNum := rand.Float64()
-	var foundItem Item
-	for _, item := range config.items {
-		if item.ItemDropChance == 0 {
-			continue
-		}
-		if randNum <= item.ItemDropChance {
-			foundItem = item
-			break
+
+	itemPool := []Item{}
+	for _, item := range config.items.Consumables {
+		if item.DropChance > 0 {
+			itemPool = append(itemPool, item)
 		}
 	}
-	if foundItem.ItemID != 0 {
-		fmt.Printf("You found a %v!\n", foundItem.ItemName)
-		config.player.addItem(foundItem, 1)
-		return
+	for _, item := range config.items.Valuables {
+		if item.DropChance > 0 {
+			itemPool = append(itemPool, item)
+		}
 	}
+
+	totalWeight := 0.0
+	for _, item := range itemPool {
+		totalWeight += item.DropChance
+	}
+
+	rnd := rand.Float64() * totalWeight
+	current := 0.0
+	for _, item := range itemPool {
+		current += item.DropChance
+		if rnd <= current {
+			config.player.addItem(item, 1)
+			fmt.Printf("You found a %v!\n", item.Name)
+			return
+		}
+	}
+
 	fmt.Println("The chest was empty.")
 }

@@ -42,10 +42,11 @@ func dungeon(cnf *config) error {
 			println("Unknown command")
 			continue
 		}
-		err := command.callback(cnf, args...)
-		if command.name == "!leavedungeon" {
-			return nil
+		if !command.canUseInDungeon {
+			println("This command can not be used inside the dungeon")
+			continue
 		}
+		err := command.callback(cnf, args...)
 		if err != nil {
 			fmt.Println(err)
 			continue
