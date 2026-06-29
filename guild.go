@@ -7,11 +7,11 @@ import (
 )
 
 func guild(config *config) error {
-	player := config.player
+	player := &config.player
 	reader := bufio.NewScanner(os.Stdin)
 	fmt.Println("You enter the guild throu the main entrance and stand in the lobby.")
 	fmt.Println("Your guild rank can be checked with the !player command outside the guild")
-	fmt.Println("--Current options:\n -!exit: leave the guild\n -!quest: turn in your quest if ready or choose a new one")
+	fmt.Println("--Current options:\n -!exit: leave the guild\n -!quest: turn in your quest if ready or choose a new one / additional arguments: -reset")
 	for {
 		fmt.Print("Guild >>> ")
 		reader.Scan()
@@ -24,6 +24,17 @@ func guild(config *config) error {
 			return nil
 		}
 		if userInput[0] == "!quest" {
+			if len(userInput) > 1 {
+				if userInput[1] == "-reset" {
+					resetQuest(config)
+					fmt.Println("Quest resetted type !quest to get a new one")
+					continue
+				} else {
+					fmt.Println("Wrong argument")
+					continue
+				}
+			}
+
 			if questComplete(config) {
 				fmt.Printf("Quest %v finished\n", player.CurrentQuests.CurrentQuest.Name)
 				resetQuest(config)

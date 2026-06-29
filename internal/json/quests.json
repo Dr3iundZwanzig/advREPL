@@ -10,7 +10,7 @@
             "repeatable": true,
             "guildExperience": 20,
             "itemRewards": [
-                { "itemID": 2, "amount": 1 }
+                { "itemID": 1, "amount": 1 }
             ]
         },
         "kill_goblins": {
@@ -23,7 +23,7 @@
             "repeatable": true,
             "guildExperience": 20,
             "itemRewards": [
-                { "itemID": 2, "amount": 2 }
+                { "itemID": 1, "amount": 1 }
             ]
         }
     },
@@ -38,7 +38,7 @@
             "repeatable": true,
             "guildExperience": 20,
             "itemRewards": [
-                { "itemID": 2, "amount": 2 }
+                { "itemID": 1, "amount": 2 }
             ]
         }
     }

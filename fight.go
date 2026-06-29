@@ -74,9 +74,11 @@ func triggerFight(config *config, room room) error {
 				player.CurrentExperience.CurrentXP = player.CurrentExperience.NextLevelXP
 			}
 			if player.CurrentQuests.HasQuest && player.CurrentQuests.CurrentQuest.Objective == currentEnemy.Name {
-				player.CurrentQuests.Progress += 1
 				if questComplete(config) {
 					fmt.Println("***Quest completed return to the guild to turn it in***")
+				} else {
+					player.CurrentQuests.Progress += 1
+					fmt.Printf("# Quest Progress: %v/%v\n", player.CurrentQuests.Progress, player.CurrentQuests.CurrentQuest.Amount)
 				}
 			}
 			return nil
