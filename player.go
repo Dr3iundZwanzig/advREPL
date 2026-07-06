@@ -21,6 +21,8 @@ type Player struct {
 	Items             map[int]*PlayerItem `json:"items"`
 	CurrentQuests     PlayerQuest         `json:"currentQuests"`
 	CurrentExperience PlayerExperience    `json:"experience"`
+	AutoSaveFileName  string              `json:"autoSaveFileName"`
+	AutoSave          bool                `json:"autoSave"`
 }
 
 type PlayerQuest struct {

@@ -27,6 +27,10 @@ func startRepl(config *config) {
 			}
 		}
 
+		if config.player.AutoSave {
+			commandSave(config, config.player.AutoSaveFileName, "autosave")
+		}
+
 		fmt.Print("Adv >>> ")
 		reader.Scan()
 
@@ -186,6 +190,12 @@ func getCommands() map[string]cliCommand {
 			description:     "Load a saved game state",
 			canUseInDungeon: false,
 			callback:        commandLoad,
+		},
+		"!autosave": {
+			name:            "!autosave",
+			description:     "Enable autosave with \"-on\" or \"-of\" and a file name. If no additional arguments are given will show the state and the filename.",
+			canUseInDungeon: false,
+			callback:        commandAutoSave,
 		},
 		"!leavedungeon": {
 			name:            "!leavedungeon",

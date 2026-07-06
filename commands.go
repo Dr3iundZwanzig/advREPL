@@ -191,6 +191,12 @@ func commandSave(config *config, args ...string) error {
 	if err != nil {
 		return fmt.Errorf("error encoding config to json")
 	}
+	if len(args) > 1 {
+		if args[1] == "autosave" {
+			///fmt.Println("---Autosave") ///testing
+			return nil
+		}
+	}
 	fmt.Println("Game saved successfully to", saveFileName+".json")
 	return nil
 }
@@ -212,6 +218,44 @@ func commandLoad(config *config, args ...string) error {
 		return fmt.Errorf("error decoding config from json")
 	}
 	fmt.Println("Game loaded successfully from", saveFileName+".json")
+	return nil
+}
+
+func commandAutoSave(config *config, args ...string) error {
+	if len(args) < 1 {
+		if config.player.AutoSave {
+			fmt.Println("-Autosafe currently ON")
+		} else {
+			fmt.Println("-Autosafe currently OFF")
+		}
+		fmt.Printf("-Autosafe file name: %v\n", config.player.AutoSaveFileName)
+		return fmt.Errorf("*Additional arguments needed to toggle autosafe and filename")
+	}
+
+	if len(args) > 1 {
+		saveFileName := args[1]
+		if saveFileName == "" {
+			return fmt.Errorf("*Invalid save file name")
+		}
+		config.player.AutoSaveFileName = saveFileName
+		fmt.Printf("New save file name: %v\n", saveFileName)
+	}
+
+	toggleAutoSave := args[0]
+	switch toggleAutoSave {
+	case "-on":
+		if config.player.AutoSaveFileName == "" {
+			return fmt.Errorf("*Save file name empty cannot turn on second arguments needs to be a valid name")
+		}
+		config.player.AutoSave = true
+		fmt.Println("Autosave turned ON")
+	case "-off":
+		config.player.AutoSave = false
+		fmt.Println("Autosave turned OFF")
+	default:
+		return fmt.Errorf("*Invalid argument: %v  Use -on or -off", toggleAutoSave)
+	}
+
 	return nil
 }
 
