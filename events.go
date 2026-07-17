@@ -70,6 +70,11 @@ func triggerDungeonEvent(room room, config *config) error {
 func treasureEvent(config *config) {
 	fmt.Println("You found a treasure chest!")
 
+	if rand.Float64() < 0.1 {
+		fmt.Println("The chest was empty.")
+		return
+	}
+
 	itemPool := []Item{}
 	for _, item := range config.items.Consumables {
 		if item.DropChance > 0 {
@@ -87,16 +92,28 @@ func treasureEvent(config *config) {
 		totalWeight += item.DropChance
 	}
 
-	rnd := rand.Float64() * totalWeight
-	current := 0.0
-	for _, item := range itemPool {
-		current += item.DropChance
-		if rnd <= current {
-			config.player.addItem(item, 1)
-			fmt.Printf("You found a %v!\n", item.Name)
-			return
-		}
+	itemCount := 1
+	roll := rand.Float64()
+	switch {
+	case roll < 0.1:
+		itemCount = 3
+	case roll < 0.35:
+		itemCount = 2
 	}
 
-	fmt.Println("The chest was empty.")
+	fmt.Printf("The chest contains %d item(s)!\n", itemCount)
+	for i := 0; i < itemCount; i++ {
+		rnd := rand.Float64() * totalWeight
+		current := 0.0
+		var chosenItem Item
+		for _, item := range itemPool {
+			current += item.DropChance
+			if rnd <= current {
+				chosenItem = item
+				break
+			}
+		}
+		config.player.addItem(chosenItem, 1)
+		fmt.Printf("You found: %v!\n", chosenItem.Name)
+	}
 }

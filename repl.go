@@ -193,7 +193,7 @@ func getCommands() map[string]cliCommand {
 		},
 		"!autosave": {
 			name:            "!autosave",
-			description:     "Enable autosave with \"-on\" or \"-of\" and a file name. If no additional arguments are given will show the state and the filename.",
+			description:     "Enable autosave with \"-on\" or \"-of\" and a file name. If no additional arguments are given will show the state and the filename.\n Saves the game when you enter the city does not work in the dungeon",
 			canUseInDungeon: false,
 			callback:        commandAutoSave,
 		},
